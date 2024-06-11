@@ -1,8 +1,0 @@
-{
-	"BuildId": "27405482",
-	"Modules": 
-	{
-		"CHORUS": "UnrealEditor-CHORUS.dll",
-		"CHORUSEditor": "UnrealEditor-CHORUSEditor.dll"
-	}
-}
