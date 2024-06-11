@@ -1,0 +1,14 @@
+{
+    "Version": "1.2",
+    "Data": {
+        "Source": "f:\\perforce\\isjtar_3090\\depot\\driftkill\\ue5\\driftkill\\plugins\\chorus\\source\\chorus\\private\\chorus.cpp",
+        "ProvidedModule": "",
+        "PCH": "f:\\perforce\\isjtar_3090\\depot\\driftkill\\ue5\\driftkill\\intermediate\\build\\win64\\x64\\driftkilleditor\\development\\unrealed\\sharedpch.unrealed.cpp20.h.pch",
+        "Includes": [
+            "f:\\perforce\\isjtar_3090\\depot\\driftkill\\ue5\\driftkill\\plugins\\chorus\\intermediate\\build\\win64\\x64\\unrealeditor\\development\\chorus\\definitions.chorus.h",
+            "f:\\perforce\\isjtar_3090\\depot\\driftkill\\ue5\\driftkill\\plugins\\chorus\\source\\chorus\\public\\chorus.h"
+        ],
+        "ImportedModules": [],
+        "ImportedHeaderUnits": []
+    }
+}

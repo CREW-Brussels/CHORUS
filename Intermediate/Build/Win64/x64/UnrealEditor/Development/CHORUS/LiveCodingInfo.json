@@ -1,0 +1,15 @@
+{
+	"RemapUnityFiles": 
+	{
+		"Module.CHORUS.cpp.obj": [
+			"CHORSubsystem.gen.cpp.obj",
+			"CHORUS.init.gen.cpp.obj",
+			"ReadBone.gen.cpp.obj",
+			"CHORPlay.cpp.obj",
+			"CHORRec.cpp.obj",
+			"CHORSubsystem.cpp.obj",
+			"CHORUS.cpp.obj",
+			"ReadBone.cpp.obj"
+		]
+	}
+}
