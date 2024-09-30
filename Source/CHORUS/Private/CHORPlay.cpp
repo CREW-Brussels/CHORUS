@@ -34,6 +34,7 @@ void FCHORPlay::Initialize_AnyThread(const FAnimationInitializeContext& Context)
     }
 
     Base.Initialize(Context);
+    CurrentTime = 0.0;
 
     if (ChorusSubSystem != nullptr)
     {
@@ -102,6 +103,7 @@ void FCHORPlay::Update_AnyThread(const FAnimationUpdateContext& Context)
 {
     Base.Update(Context);
     GetEvaluateGraphExposedInputs().Execute(Context);
+    DeltaTime = Context.GetDeltaTime();
 }
 
 void FCHORPlay::InitializePlayHead()
@@ -132,29 +134,12 @@ void FCHORPlay::InitializePlayHead()
     PlayHead.Timestamp = time += sec;
 }
 
-bool FCHORPlay::InterpolatePose(const float Position, FPoseContext& Output) const
+void FCHORPlay::InterpolatePose(const FChorusFrame &FrameA, const FChorusFrame &FrameB, const float Alpha, FPoseContext& Output) const
 {
-    if (ChorusSubSystem == nullptr)
-        return false;
-    
-    if (PlayHead.Track == 0)
-        return false;
-    
-    const float FramePos = float(PlayHead.FrameCount) * Position;
-
-    const int Frame1 = int(floor(FramePos)) % (PlayHead.FrameCount - 1);
-    const int Frame2 = int(ceil(FramePos)) % (PlayHead.FrameCount - 1);
-
-    const float Alpha = FMath::Frac(FramePos);
-
-    TArray<FTransform> BoneTransformsA = ChorusSubSystem->Tracks[PlayHead.Track].Poses[Frame1];
-    TArray<FTransform> BoneTransformsB = ChorusSubSystem->Tracks[PlayHead.Track].Poses[Frame2];
-
-    for (int32 BoneIndex = 0; BoneIndex < BoneTransformsA.Num(); ++BoneIndex)
+    for (int32 BoneIndex = 0; BoneIndex < FrameA.pose.Num(); ++BoneIndex)
     {
-        Output.Pose[FCompactPoseBoneIndex(BoneIndex)].Blend(BoneTransformsA[BoneIndex], BoneTransformsB[BoneIndex], Alpha);
+        Output.Pose[FCompactPoseBoneIndex(BoneIndex)].Blend(FrameA.pose[BoneIndex], FrameB.pose[BoneIndex], Alpha);
     }
-    return true;
 }
 
 bool FCHORPlay::ReplayRecording(FPoseContext& Output)
@@ -165,7 +150,32 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
     if (PlayHead.Track == 0)
         InitializePlayHead();
 
-    double CurentTime = 0;
+    CurrentTime += DeltaTime * ChorusSubSystem->ControlIds[_ControlID].Speed;
+    const TArray<FChorusFrame>& frames = ChorusSubSystem->Tracks[PlayHead.Track].Frames;
+    if (PlayHead.FrameCount > 1) {
+        double t = frames[PlayHead.StartFrame].time;
+        if (CurrentTime < t) {
+            CurrentTime += frames[PlayHead.EndFrame-1].time - frames[PlayHead.StartFrame].time;
+        }
+        if (CurrentTime >= frames[PlayHead.EndFrame-1].time) {
+            if (ChorusSubSystem->ControlIds[_ControlID].bLoop) {
+                CurrentTime -= frames[PlayHead.EndFrame-1].time - frames[PlayHead.StartFrame].time;
+            }
+            else {
+                ChorusSubSystem->ControlIds[_ControlID].bPlay = false;
+                return false;
+            }
+            
+        }
+        for (int i = PlayHead.StartFrame+1; i < PlayHead.EndFrame; i++) {
+            double nt = frames[i].time;
+            if (CurrentTime >= t && CurrentTime < nt) {
+                InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
+            }
+            t = nt;
+        }
+    }
+    /*double CurentTime = 0;
     int32 s = 0;
     UGameplayStatics::GetAccurateRealTime(s, CurentTime);
     CurentTime += s;
@@ -180,8 +190,10 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         PlayHead.Track = 0;
         pos = 1;
     }
+    */
+    
 
-    return InterpolatePose(abs(pos), Output);
+    return true;// InterpolatePose(abs(pos), Output);
 }
 
 FCHORPlay::FCHORPlay(): ChorusSubSystem(nullptr)

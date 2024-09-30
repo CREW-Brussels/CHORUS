@@ -5,6 +5,16 @@
 #include "FChorusTrack.generated.h"
 
 USTRUCT()
+struct FChorusFrame
+{
+	GENERATED_BODY()
+public:
+
+	TArray<FTransform> pose;
+	double time;
+};
+
+USTRUCT()
 struct FChorusTrack
 {
 	GENERATED_BODY()
@@ -12,9 +22,8 @@ struct FChorusTrack
 public:
 	FChorusTrack();
 	
-	TArray<TArray<FTransform>> Poses;
+	TArray<FChorusFrame> Frames;
 	TArray<FChorusCuePoint> CuePoints;
 	int32 Fps;
-	float PrevFrameTime;
 	void SetFps(int32 Fps);
 };

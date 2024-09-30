@@ -29,7 +29,10 @@ void FCHORRec::Initialize_AnyThread(const FAnimationInitializeContext& Context)
     }
     
     Base.Initialize(Context);
-    
+
+    CurrentTime = 0.0;
+    DeltaTime = 0.0;
+    _Fps = -1;
     if (ChorusSubSystem != nullptr)
     {
         _ControlID = ChorusSubSystem->RegisterRecorder(_Track, _bRecord, ControlID);
@@ -48,6 +51,8 @@ void FCHORRec::ReadPins()
     if (Fps != _Fps)
     {
         _Fps = Fps;
+        FrameDelta = 1.0 / (double)_Fps;
+        RemainderTime = FrameDelta;
         if (ChorusSubSystem->Tracks.Contains(ChorusSubSystem->ControlIds[_ControlID].Track))
         ChorusSubSystem->Tracks[ChorusSubSystem->ControlIds[_ControlID].Track].SetFps(Fps);
     }
@@ -72,6 +77,7 @@ void FCHORRec::CacheBones_AnyThread(const FAnimationCacheBonesContext& Context)
 
 void FCHORRec::Update_AnyThread(const FAnimationUpdateContext& Context) 
 {
+    DeltaTime = Context.GetDeltaTime();
     Base.Update(Context);
     GetEvaluateGraphExposedInputs().Execute(Context);
 
@@ -85,14 +91,21 @@ void FCHORRec::Evaluate_AnyThread(FPoseContext& Output)
         return;
     
     Base.Evaluate(Output);
+
     if (_ControlID == 0)
         _ControlID = ControlID;
-    
-    if (ChorusSubSystem->ControlIds[_ControlID].bIsRecording)
+
+    RemainderTime += DeltaTime;
+    CurrentTime += DeltaTime;
+    if (ChorusSubSystem->ControlIds[_ControlID].bIsRecording && RemainderTime >= FrameDelta)
     {
-        TArray<FTransform> PoseCopy;
-        PoseCopy = Output.Pose.GetBones();
-        ChorusSubSystem->RecordFrame(ChorusSubSystem->ControlIds[_ControlID].Track, &PoseCopy);
+        FChorusFrame frame;
+        frame.pose = Output.Pose.GetBones();
+        frame.time = CurrentTime;
+
+        RemainderTime = FMath::Fmod(RemainderTime, FrameDelta);
+
+        ChorusSubSystem->RecordFrame(ChorusSubSystem->ControlIds[_ControlID].Track, frame);
     }
 }
 

@@ -16,7 +16,7 @@ void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
 {
     if (!Tracks.Contains(CuePoint.Track))
         Tracks.Add(CuePoint.Track);
-    CuePoint.Index = Tracks[CuePoint.Track].Poses.Num();
+    CuePoint.Index = Tracks[CuePoint.Track].Frames.Num();
     Tracks[CuePoint.Track].CuePoints.Add(CuePoint);
 }
 
@@ -117,13 +117,13 @@ int32 UCHORSubsystem::RegisterRecorder(const int32 Track, const bool bRecord, co
     return RegisterControlId(ControlId, NewControl);
 }
 
-void UCHORSubsystem::RecordFrame(int32 Track, const TArray<FTransform>* Pose)
+void UCHORSubsystem::RecordFrame(int32 Track, const FChorusFrame& frame)
 {
 	// int sec = 0;
 	// double time = 0;
-	// UGameplayStatics::GetAccurateRealTime(sec, time);
+	//FPlatformTime::Seconds();
 	
-	Tracks[Track].Poses.Push(*Pose);
+	Tracks[Track].Frames.Push(frame);
 }
 
 UCHORSubsystem::UCHORSubsystem()
@@ -235,7 +235,7 @@ void UCHORSubsystem::DeleteTrack(const int Track)
 {
 	if (Tracks.Contains(Track))
 	{
-		Tracks[Track].Poses.Empty();
+		Tracks[Track].Frames.Empty();
 		Tracks[Track].CuePoints.Empty();
 	}
 }

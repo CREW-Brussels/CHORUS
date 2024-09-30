@@ -26,7 +26,7 @@ public:
 	int32 RegisterRecorder(int32 Track, bool bRecord, int32 ControlId);
 	int32 GetNextControlId();
 	void UnregisterPlayer(int32 ControlId);
-	void RecordFrame(int32 Track, const TArray<FTransform>* Pose);
+	void RecordFrame(int32 Track, const FChorusFrame &frame);
 	void UnregisterRecorder(int32 ControlId);
 	void RegisterCuePoint(FChorusCuePoint& CuePoint);
 	FChorusCuePoint PlayPauseRecorder(int32 ControlId, bool Recording);

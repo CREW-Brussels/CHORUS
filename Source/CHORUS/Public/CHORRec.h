@@ -59,4 +59,9 @@ private:
     UCHORSubsystem* ChorusSubSystem;
 
 	void ReadPins();
+
+	double DeltaTime;
+	double CurrentTime;
+	double RemainderTime;
+	double FrameDelta;
 };

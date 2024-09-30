@@ -3,7 +3,6 @@
 FChorusTrack::FChorusTrack()
 {
 	Fps = 120;
-	PrevFrameTime = 0;
 }
 
 void FChorusTrack::SetFps(int32 NewFps)
@@ -13,5 +12,6 @@ void FChorusTrack::SetFps(int32 NewFps)
 	{
 		this->Fps = NewFps;
 		// TODO: create CupPoint to record FPS change.
+		// shouldn't be needed anymore
 	}
 }

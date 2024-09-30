@@ -76,8 +76,11 @@ private:
 	UPROPERTY()
 	int32 _ControlID = 0;
 
-	bool InterpolatePose(float Position, FPoseContext& Output) const;
+	void InterpolatePose(const FChorusFrame& FrameA, const FChorusFrame& FrameB, const float Alpha, FPoseContext& Output) const;
 	bool ReplayRecording(FPoseContext& Output);
 	void InitializePlayHead();
 	void ReadPins();
+
+	double DeltaTime;
+	double CurrentTime;
 };
