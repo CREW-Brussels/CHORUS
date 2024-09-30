@@ -3,62 +3,81 @@
 #pragma once
 
 #include "CoreMinimal.h"
-#include "Engine.h" // includes in .h in .cpp only include its own .h
 #include "UObject/ObjectMacros.h"
 #include "Animation/AnimNodeBase.h"
-#include "Animation/InputScaleBias.h"
-#include "Kismet/GameplayStatics.h"
 #include "Engine/GameInstance.h"
 #include "Runtime/Engine/Classes/Engine/World.h"
 #include "CHORSubsystem.h"
 #include "Math/UnrealMathUtility.h"
-#include "BoneControllers/AnimNode_SkeletalControlBase.h"
 #include "BonePose.h"
-#include "CHORPlay.generated.h"
+#include "FChorusCuePoint.h"
+#include "AnimationRuntime.h"
+#include "FChorusPlayHead.h"
+#include "Engine/World.h"
 
+#include "CHORPlay.generated.h"
 
 USTRUCT(BlueprintInternalUseOnly)
 struct CHORUS_API FCHORPlay: public FAnimNode_Base
 {
 	GENERATED_USTRUCT_BODY()
- 
+
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Links)
 	FPoseLink Base;
-
-	UPROPERTY()
-	UCHORSubsystem* IsjSubSystem;
-
-private:
-	int frame;
-	int maxFrames;
 	
-
-public:
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	FChorusCuePoint Start;
 	
-	FCHORPlay();
-	void ResetFrame();
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	FChorusCuePoint End;
+	
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	float Speed = 1;
+	
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	bool bLoop = false;
+	
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	bool bPlay = false;
+	
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	int32 ControlID = 0;
+	
 	virtual void Initialize_AnyThread(const FAnimationInitializeContext& Context) override;
-	// virtual void GatherDebugData(FNodeDebugData& debugData) override;
 	virtual bool NeedsOnInitializeAnimInstance() const override { return true; }
 	virtual void Update_AnyThread(const FAnimationUpdateContext& Context)override;
 	virtual void Evaluate_AnyThread(FPoseContext& Output) override;
 	virtual void CacheBones_AnyThread(const FAnimationCacheBonesContext& Context) override;
 
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
-	int numFrames = 120;
-
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
-	bool bIsPlaying = false;
-
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
-	int track = 0;
-
-	//UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
-	//int frame = 0;
+	FCHORPlay();
 
 private:
-	// virtual void InitializeBoneReferences(const FBoneContainer& RequiredBones) override;
-	
-	
+	UPROPERTY()
+	FChorusPlayHead PlayHead;
 
+	UPROPERTY()
+	UCHORSubsystem* ChorusSubSystem;
+
+	UPROPERTY()
+	FChorusCuePoint _Start;
+	
+	UPROPERTY()
+	FChorusCuePoint _End;
+	
+	UPROPERTY()
+	float _Speed = 1;
+	
+	UPROPERTY()
+	bool _bLoop = false;
+	
+	UPROPERTY()
+	bool _bPlay = false;
+	
+	UPROPERTY()
+	int32 _ControlID = 0;
+
+	bool InterpolatePose(float Position, FPoseContext& Output) const;
+	bool ReplayRecording(FPoseContext& Output);
+	void InitializePlayHead();
+	void ReadPins();
 };

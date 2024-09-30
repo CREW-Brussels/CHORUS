@@ -11,11 +11,10 @@
 
 #define LOCTEXT_NAMESPACE "A3Nodes"
 
-UCHORUSPlay::UCHORUSPlay(const FObjectInitializer& ObjectInitializer)
-	: Super(ObjectInitializer)
-{
-	UE_LOG(LogTemp, Warning, TEXT("PLAY GRAPH INIT"));
-}
+UCHORUSPlay::UCHORUSPlay(const FObjectInitializer& ObjectInitializer): Super(ObjectInitializer){}
 
+FString UCHORUSPlay::GetDesc() { return "Replay a Chorus Clip"; }
+
+FText UCHORUSPlay::GetNodeTitle(ENodeTitleType::Type TitleType) const { return FText::FromString("Chorus Player")   ;}
 
 #undef LOCTEXT_NAMESPACE

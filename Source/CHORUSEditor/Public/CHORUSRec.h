@@ -15,9 +15,15 @@ class CHORUSEDITOR_API UCHORUSRec : public UAnimGraphNode_Base
 {
 	GENERATED_BODY()
 
-	UPROPERTY(EditAnywhere, Category = Settings)
-	FCHORRec Node;	
+	UPROPERTY(EditAnywhere, Category = "Settings")
+	FCHORRec Node;
+	
+public:
+	virtual FString GetDesc() override;
+	virtual FLinearColor GetNodeBodyTintColor() const override;
 
-	UCHORUSRec(const FObjectInitializer& ObjectInitializer);
 
+private:
+	
+	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 };

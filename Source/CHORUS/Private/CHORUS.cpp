@@ -2,7 +2,7 @@
 
 #include "CHORUS.h"
 
-#define LOCTEXT_NAMESPACE "CHORUS"
+#define LOCTEXT_NAMESPACE "FTestCModule"
 
 void FCHORUSModule::StartupModule()
 {

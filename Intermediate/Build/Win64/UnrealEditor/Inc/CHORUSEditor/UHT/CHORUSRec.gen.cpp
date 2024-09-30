@@ -47,7 +47,6 @@ void EmptyLinkFunctionForGeneratedCodeCHORUSRec() {}
 	const UECodeGen_Private::FMetaDataPairParam Z_Construct_UClass_UCHORUSRec_Statics::Class_MetaDataParams[] = {
 		{ "IncludePath", "CHORUSRec.h" },
 		{ "ModuleRelativePath", "Public/CHORUSRec.h" },
-		{ "ObjectInitializerConstructorDeclared", "" },
 	};
 #endif
 #if WITH_METADATA
@@ -56,7 +55,7 @@ void EmptyLinkFunctionForGeneratedCodeCHORUSRec() {}
 		{ "ModuleRelativePath", "Public/CHORUSRec.h" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCHORUSRec_Statics::NewProp_Node = { "Node", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCHORUSRec, Node), Z_Construct_UScriptStruct_FCHORRec, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UCHORUSRec_Statics::NewProp_Node_MetaData), Z_Construct_UClass_UCHORUSRec_Statics::NewProp_Node_MetaData) }; // 1252408867
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCHORUSRec_Statics::NewProp_Node = { "Node", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCHORUSRec, Node), Z_Construct_UScriptStruct_FCHORRec, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UCHORUSRec_Statics::NewProp_Node_MetaData), Z_Construct_UClass_UCHORUSRec_Statics::NewProp_Node_MetaData) }; // 3851280420
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UCHORUSRec_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCHORUSRec_Statics::NewProp_Node,
 	};
@@ -91,17 +90,18 @@ void EmptyLinkFunctionForGeneratedCodeCHORUSRec() {}
 	{
 		return UCHORUSRec::StaticClass();
 	}
+	UCHORUSRec::UCHORUSRec(const FObjectInitializer& ObjectInitializer) : Super(ObjectInitializer) {}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(UCHORUSRec);
 	UCHORUSRec::~UCHORUSRec() {}
-	struct Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_Statics
+	struct Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_UCHORUSRec, UCHORUSRec::StaticClass, TEXT("UCHORUSRec"), &Z_Registration_Info_UClass_UCHORUSRec, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCHORUSRec), 3996637760U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_UCHORUSRec, UCHORUSRec::StaticClass, TEXT("UCHORUSRec"), &Z_Registration_Info_UClass_UCHORUSRec, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCHORUSRec), 1701152480U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_1018700196(TEXT("/Script/CHORUSEditor"),
-		Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_2086532978(TEXT("/Script/CHORUSEditor"),
+		Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSRec_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

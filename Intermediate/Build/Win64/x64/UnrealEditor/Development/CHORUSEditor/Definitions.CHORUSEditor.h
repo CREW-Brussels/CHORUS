@@ -1,4 +1,4 @@
-#include "F:/Perforce/Isjtar_3090/depot/DriftKill/ue5/DriftKill/Intermediate/Build/Win64/x64/DriftKillEditor/Development/UnrealEd/SharedDefinitions.UnrealEd.Cpp20.h"
+#include "C:/Users/Balthazar/Desktop/Repo/Crew/CHORUS_test/CHORUS_test/Intermediate/Build/Win64/x64/CHORUS_testEditor/Development/UnrealEd/SharedDefinitions.UnrealEd.Cpp20.h"
 #undef UE_IS_ENGINE_MODULE
 #undef DEPRECATED_FORGAME
 #define DEPRECATED_FORGAME DEPRECATED
@@ -13,8 +13,8 @@
 #define UE_ENABLE_INCLUDE_ORDER_DEPRECATED_IN_5_1 0
 #define UE_ENABLE_INCLUDE_ORDER_DEPRECATED_IN_5_2 0
 #define UE_ENABLE_INCLUDE_ORDER_DEPRECATED_IN_5_3 0
-#define UE_PROJECT_NAME DriftKill
-#define UE_TARGET_NAME DriftKillEditor
+#define UE_PROJECT_NAME CHORUS_test
+#define UE_TARGET_NAME CHORUS_testEditor
 #define UE_MODULE_NAME "CHORUSEditor"
 #define UE_PLUGIN_NAME "CHORUS"
 #define IMPLEMENT_ENCRYPTION_KEY_REGISTRATION() 

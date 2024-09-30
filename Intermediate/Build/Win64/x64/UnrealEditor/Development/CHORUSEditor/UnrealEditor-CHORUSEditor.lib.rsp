@@ -6,8 +6,7 @@
 /NAME:"UnrealEditor-CHORUSEditor.dll"
 /IGNORE:4221
 /NODEFAULTLIB
-"F:\Perforce\Isjtar_3090\depot\DriftKill\ue5\DriftKill\Intermediate\Build\Win64\x64\DriftKillEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h.obj"
-"F:\Perforce\Isjtar_3090\depot\DriftKill\ue5\DriftKill\Plugins\CHORUS\Intermediate\Build\Win64\x64\UnrealEditor\Development\CHORUSEditor\Module.CHORUSEditor.cpp.obj"
-"F:\Perforce\Isjtar_3090\depot\DriftKill\ue5\DriftKill\Plugins\CHORUS\Intermediate\Build\Win64\x64\UnrealEditor\Development\CHORUSEditor\ReadBoneEditor.cpp.obj"
-"F:\Perforce\Isjtar_3090\depot\DriftKill\ue5\DriftKill\Plugins\CHORUS\Intermediate\Build\Win64\x64\UnrealEditor\Development\CHORUSEditor\Default.rc2.res"
-/OUT:"F:\Perforce\Isjtar_3090\depot\DriftKill\ue5\DriftKill\Plugins\CHORUS\Intermediate\Build\Win64\x64\UnrealEditor\Development\CHORUSEditor\UnrealEditor-CHORUSEditor.lib"
+"C:\Users\Balthazar\Desktop\Repo\Crew\CHORUS_test\CHORUS_test\Intermediate\Build\Win64\x64\CHORUS_testEditor\Development\UnrealEd\SharedPCH.UnrealEd.Cpp20.h.obj"
+"C:\Users\Balthazar\Desktop\Repo\Crew\CHORUS_test\CHORUS_test\Plugins\CHORUS\Intermediate\Build\Win64\x64\UnrealEditor\Development\CHORUSEditor\Module.CHORUSEditor.cpp.obj"
+"C:\Users\Balthazar\Desktop\Repo\Crew\CHORUS_test\CHORUS_test\Plugins\CHORUS\Intermediate\Build\Win64\x64\UnrealEditor\Development\CHORUSEditor\Default.rc2.res"
+/OUT:"C:\Users\Balthazar\Desktop\Repo\Crew\CHORUS_test\CHORUS_test\Plugins\CHORUS\Intermediate\Build\Win64\x64\UnrealEditor\Development\CHORUSEditor\UnrealEditor-CHORUSEditor.lib"

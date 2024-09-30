@@ -56,7 +56,7 @@ void EmptyLinkFunctionForGeneratedCodeCHORUSPlay() {}
 		{ "ModuleRelativePath", "Public/CHORUSPlay.h" },
 	};
 #endif
-	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCHORUSPlay_Statics::NewProp_Node = { "Node", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCHORUSPlay, Node), Z_Construct_UScriptStruct_FCHORPlay, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UCHORUSPlay_Statics::NewProp_Node_MetaData), Z_Construct_UClass_UCHORUSPlay_Statics::NewProp_Node_MetaData) }; // 3751515903
+	const UECodeGen_Private::FStructPropertyParams Z_Construct_UClass_UCHORUSPlay_Statics::NewProp_Node = { "Node", nullptr, (EPropertyFlags)0x0040000000000001, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(UCHORUSPlay, Node), Z_Construct_UScriptStruct_FCHORPlay, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UClass_UCHORUSPlay_Statics::NewProp_Node_MetaData), Z_Construct_UClass_UCHORUSPlay_Statics::NewProp_Node_MetaData) }; // 3328670414
 	const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_UCHORUSPlay_Statics::PropPointers[] = {
 		(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_UCHORUSPlay_Statics::NewProp_Node,
 	};
@@ -93,15 +93,15 @@ void EmptyLinkFunctionForGeneratedCodeCHORUSPlay() {}
 	}
 	DEFINE_VTABLE_PTR_HELPER_CTOR(UCHORUSPlay);
 	UCHORUSPlay::~UCHORUSPlay() {}
-	struct Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_Statics
+	struct Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_Statics
 	{
 		static const FClassRegisterCompiledInInfo ClassInfo[];
 	};
-	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_Statics::ClassInfo[] = {
-		{ Z_Construct_UClass_UCHORUSPlay, UCHORUSPlay::StaticClass, TEXT("UCHORUSPlay"), &Z_Registration_Info_UClass_UCHORUSPlay, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCHORUSPlay), 3798179389U) },
+	const FClassRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_Statics::ClassInfo[] = {
+		{ Z_Construct_UClass_UCHORUSPlay, UCHORUSPlay::StaticClass, TEXT("UCHORUSPlay"), &Z_Registration_Info_UClass_UCHORUSPlay, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(UCHORUSPlay), 925783129U) },
 	};
-	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_1841745364(TEXT("/Script/CHORUSEditor"),
-		Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_DriftKill_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_Statics::ClassInfo),
+	static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_3511359224(TEXT("/Script/CHORUSEditor"),
+		Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_Balthazar_Desktop_Repo_Crew_CHORUS_test_CHORUS_test_Plugins_CHORUS_Source_CHORUSEditor_Public_CHORUSPlay_h_Statics::ClassInfo),
 		nullptr, 0,
 		nullptr, 0);
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

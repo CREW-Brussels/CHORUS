@@ -5,11 +5,9 @@
 			"CHORUSEditor.init.gen.cpp.obj",
 			"CHORUSPlay.gen.cpp.obj",
 			"CHORUSRec.gen.cpp.obj",
-			"ReadBoneEditor.gen.cpp.obj",
 			"CHORUSEditor.cpp.obj",
 			"CHORUSPlay.cpp.obj",
-			"CHORUSRec.cpp.obj",
-			"ReadBoneEditor.cpp.obj"
+			"CHORUSRec.cpp.obj"
 		]
 	}
 }
