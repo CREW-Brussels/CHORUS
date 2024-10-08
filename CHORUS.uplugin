@@ -23,7 +23,7 @@
 		},
 		{
 			"Name": "CHORUSEditor",
-			"Type": "UncookedOnly",
+			"Type": "Editor",
 			"LoadingPhase": "Default"
 		}
 	]
