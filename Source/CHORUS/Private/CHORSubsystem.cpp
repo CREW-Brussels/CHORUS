@@ -175,6 +175,18 @@ void UCHORSubsystem::ControlRecorder(const int32 ControlID, const bool Record, F
     CuePoint = PlayPauseRecorder(ControlID, Record);
 }
 
+
+void UCHORSubsystem::PlayFromCuePointForDuration(int32 ControlID, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play)
+{
+	FChorusCuePoint End;
+	End.Time = Start.Time + Duration;
+	End.Track = Start.Track;
+	End.Position = -1;
+	
+	ControlPlayer(ControlID, Start, End, Speed, Loop, Play);
+}
+
+
 void UCHORSubsystem::ControlPlayer(const int32 ControlID
                                            , const FChorusCuePoint Start
                                            , const FChorusCuePoint End
@@ -196,7 +208,6 @@ void UCHORSubsystem::ControlPlayer(const int32 ControlID
 			if (l != 0)
 			{
 				ControlStruct->bPlay = Play;
-				//ControlIds[ControlID] = ControlStruct;	
 			}
 		}
 	}

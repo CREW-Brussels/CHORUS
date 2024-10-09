@@ -99,7 +99,21 @@ public:
 		, UPARAM(DisplayName = "isLoop") bool &bIsLoop
 		, UPARAM(DisplayName = "Speed") float &Speed);
 
-	// Tracks
+
+	UFUNCTION(BlueprintCallable, Category="Chorus")
+	 
+	/**
+	 * Plays from a specific CuePoint for a given duration.
+	 * 
+	 * @param ControlID the ChorusControlId that refers to this specific ChorusPlayer
+	 * @param Start CuePoint marking the beginning of the play
+	 * @param Duration Duration to play for in seconds
+	 * @param Speed The play speed
+	 * @param Loop if true the clip will loop
+	 * @param Play if true, starts playing, otherwise pauses
+	 */
+	UFUNCTION(BlueprintCallable, Category = "Chorus")
+	void PlayFromCuePointForDuration(int32 ControlID, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play);
 	
 	/**
 	 * Determine if a Track is currently recording

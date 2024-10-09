@@ -42,10 +42,11 @@ void FCHORRec::Initialize_AnyThread(const FAnimationInitializeContext& Context)
 
 void FCHORRec::ReadPins()
 {
+
     if (_ControlID == 0)
     {
-        // TODO: not good
-        _ControlID = ControlID == 0 ? ChorusSubSystem->GetNextControlId() : ControlID;
+        UE_LOG(LogTemp, Error, TEXT("ControlID is 0, Control ID should not be 0 here."));
+        return;
     }
 
     if (Fps != _Fps)
