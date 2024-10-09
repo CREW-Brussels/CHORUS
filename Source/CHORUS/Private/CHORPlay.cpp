@@ -114,7 +114,8 @@ void FCHORPlay::InitializePlayHead()
     FControlStruct ControlStruct = ChorusSubSystem->ControlIds[_ControlID];
     ControlStruct.Speed = ControlStruct.Speed != 0 ? ControlStruct.Speed : 1;
     
-    if (ControlStruct.Start.Track != ControlStruct.End.Track)
+    if (ControlStruct.Start.Track != ControlStruct.End.Track ||
+        !ChorusSubSystem->Tracks.Contains(ControlStruct.Start.Track))
     {
         ChorusSubSystem->ControlIds[_ControlID].bPlay = false;
         PlayHead.Track = 0;
@@ -127,10 +128,35 @@ void FCHORPlay::InitializePlayHead()
     double time = 0;
     UGameplayStatics::GetAccurateRealTime(sec, time);
     
+    CurrentTime = PlayHead.StartTime = ControlStruct.Start.Timestamp(ChorusSubSystem);
+    PlayHead.EndTime = ControlStruct.End.Timestamp(ChorusSubSystem);
+
     PlayHead.StartFrame = ControlStruct.Start.Index;
     PlayHead.EndFrame = ControlStruct.End.Index;
+
+    if (PlayHead.StartFrame == -1)
+    {
+        for (int i = 0; i < ChorusSubSystem->Tracks[PlayHead.Track].Frames.Num(); i++)
+        {
+            if (ChorusSubSystem->Tracks[PlayHead.Track].Frames[i].time <= PlayHead.StartTime)
+                PlayHead.StartFrame = i;
+            else
+                break;
+        }
+    }
+
+    if (PlayHead.EndFrame == -1)
+    {
+        for (int i = 0; i < ChorusSubSystem->Tracks[PlayHead.Track].Frames.Num(); i++)
+        {
+            PlayHead.EndFrame = i;
+            if (ChorusSubSystem->Tracks[PlayHead.Track].Frames[i].time >= PlayHead.EndTime)
+                break;
+        }
+    }
+    
     PlayHead.FrameCount = PlayHead.EndFrame - PlayHead.StartFrame + 1;
-    PlayHead.Length = (ControlStruct.End.Timestamp - ControlStruct.Start.Timestamp) / ControlStruct.Speed;
+    PlayHead.Length = (ControlStruct.End.Timestamp(ChorusSubSystem) - ControlStruct.Start.Timestamp(ChorusSubSystem)) / ControlStruct.Speed;
     PlayHead.Timestamp = time += sec;
 }
 
@@ -149,51 +175,49 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
     
     if (PlayHead.Track == 0)
         InitializePlayHead();
-
+    
     CurrentTime += DeltaTime * ChorusSubSystem->ControlIds[_ControlID].Speed;
     const TArray<FChorusFrame>& frames = ChorusSubSystem->Tracks[PlayHead.Track].Frames;
+    
     if (PlayHead.FrameCount > 1) {
-        double t = frames[PlayHead.StartFrame].time;
+
+        //double t = frames[PlayHead.StartFrame].time;
+        double t = PlayHead.StartTime;
+        
         if (CurrentTime < t) {
-            CurrentTime += frames[PlayHead.EndFrame-1].time - frames[PlayHead.StartFrame].time;
+            //CurrentTime += frames[PlayHead.EndFrame-1].time - frames[PlayHead.StartFrame].time;
+            CurrentTime += PlayHead.EndTime - PlayHead.StartTime;
         }
-        if (CurrentTime >= frames[PlayHead.EndFrame-1].time) {
+        //if (CurrentTime >= frames[PlayHead.EndFrame-1].time) {
+        if (CurrentTime >= PlayHead.EndTime)
+        {
             if (ChorusSubSystem->ControlIds[_ControlID].bLoop) {
-                CurrentTime -= frames[PlayHead.EndFrame-1].time - frames[PlayHead.StartFrame].time;
+                //CurrentTime -= frames[PlayHead.EndFrame-1].time - frames[PlayHead.StartFrame].time;
+                CurrentTime -= PlayHead.EndTime - PlayHead.StartTime;
             }
             else {
                 ChorusSubSystem->ControlIds[_ControlID].bPlay = false;
                 return false;
             }
-            
         }
-        for (int i = PlayHead.StartFrame+1; i < PlayHead.EndFrame; i++) {
-            double nt = frames[i].time;
-            if (CurrentTime >= t && CurrentTime < nt) {
-                InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
+
+        if (ChorusSubSystem->Tracks[PlayHead.Track].Frames.Num() - PlayHead.StartFrame < 2)
+            InterpolatePose(frames[PlayHead.StartFrame], frames[PlayHead.StartFrame], (0), Output);
+        else
+        {
+            for (int i = PlayHead.StartFrame + 1; i < ChorusSubSystem->Tracks[PlayHead.Track].Frames.Num(); i++)
+            {
+                double nt = frames[i].time;
+                if (CurrentTime >= t && CurrentTime < nt)
+                    {
+                    InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
+                }
+                t = nt;
             }
-            t = nt;
         }
     }
-    /*double CurentTime = 0;
-    int32 s = 0;
-    UGameplayStatics::GetAccurateRealTime(s, CurentTime);
-    CurentTime += s;
     
-    float ClipPosition = (CurentTime - PlayHead.Timestamp) * _Speed; 
-
-    float pos = ClipPosition / PlayHead.Length;
-    
-    if (pos > 1 && !ChorusSubSystem->ControlIds[_ControlID].bLoop)
-    {
-        ChorusSubSystem->ControlIds[_ControlID].bLoop = _bPlay = false;
-        PlayHead.Track = 0;
-        pos = 1;
-    }
-    */
-    
-
-    return true;// InterpolatePose(abs(pos), Output);
+    return true;
 }
 
 FCHORPlay::FCHORPlay(): ChorusSubSystem(nullptr)

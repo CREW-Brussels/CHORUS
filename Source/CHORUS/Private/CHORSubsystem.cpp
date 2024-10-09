@@ -30,7 +30,7 @@ FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const int32 ControlId, const b
         UE_LOG(LogTemp, Warning, TEXT("ControlID is not valid"))
         CuePoint.Track = 0;
         CuePoint.Index = 0;
-        CuePoint.Timestamp = 0;
+        //CuePoint.Timestamp = 0;
         return CuePoint;
     }
 	
@@ -40,7 +40,7 @@ FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const int32 ControlId, const b
     CuePoint.Track = ControlIds[ControlId].Track;
     UGameplayStatics::GetAccurateRealTime(sec, time);
     time += sec;
-    CuePoint.Timestamp = time;
+    //CuePoint.Timestamp = time;
     ControlIds[ControlId].bIsRecording = Recording;
     RegisterCuePoint(CuePoint);
     return CuePoint;
@@ -175,6 +175,18 @@ void UCHORSubsystem::ControlRecorder(const int32 ControlID, const bool Record, F
     CuePoint = PlayPauseRecorder(ControlID, Record);
 }
 
+
+void UCHORSubsystem::PlayFromCuePointForDuration(int32 ControlID, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play)
+{
+	FChorusCuePoint End;
+	End.SetTimestamp(Start.Timestamp(this) + Duration);
+	End.Track = Start.Track;
+	End.Index = -1;
+	
+	ControlPlayer(ControlID, Start, End, Speed, Loop, Play);
+}
+
+
 void UCHORSubsystem::ControlPlayer(const int32 ControlID
                                            , const FChorusCuePoint Start
                                            , const FChorusCuePoint End
@@ -196,7 +208,6 @@ void UCHORSubsystem::ControlPlayer(const int32 ControlID
 			if (l != 0)
 			{
 				ControlStruct->bPlay = Play;
-				//ControlIds[ControlID] = ControlStruct;	
 			}
 		}
 	}
@@ -253,14 +264,14 @@ void UCHORSubsystem::ListCuePoints(const int Track, TArray<FChorusCuePoint>& Cue
 	}
 }
 
-void UCHORSubsystem::DeleteCuePoint(const FChorusCuePoint CuePoint)
+void UCHORSubsystem::DeleteCuePoint(FChorusCuePoint CuePoint)
 {
 	if (Tracks.Contains(CuePoint.Track))
 	{
 		int cp = -1;
 		for (int i = 0; i < Tracks[CuePoint.Track].CuePoints.Num(); i++)
 		{
-			if (Tracks[CuePoint.Track].CuePoints[i].Timestamp == CuePoint.Timestamp)
+			if (Tracks[CuePoint.Track].CuePoints[i].Timestamp(this) == CuePoint.Timestamp(this))
 			{
 				cp = i;
 				break;
@@ -281,14 +292,14 @@ void UCHORSubsystem::AddCuePoint(const int Track, FChorusCuePoint &CuePoint)
 	if (isRecording)
 	{
 		CuePoint.Track = Track;
-		CuePoint.Timestamp = UGameplayStatics::GetRealTimeSeconds(this);
+		//CuePoint.Timestamp = UGameplayStatics::GetRealTimeSeconds(this);
 		RegisterCuePoint(CuePoint);
 	}
 	else
 	{
 		CuePoint.Track = 0;
 		CuePoint.Index = 0;
-		CuePoint.Timestamp = 0;
+		//CuePoint.Timestamp = 0;
 	}
 }
 
@@ -308,7 +319,7 @@ void UCHORSubsystem::LoadClip(FString Name, int& Track, FChorusCuePoint& Start, 
 {
 }
 
-void UCHORSubsystem::GetClipLength(const FChorusCuePoint Start, const FChorusCuePoint End, float& Length)
+void UCHORSubsystem::GetClipLength( FChorusCuePoint Start,  FChorusCuePoint End, float& Length)
 {
 	if (Start.Track != End.Track)
 	{
@@ -316,7 +327,7 @@ void UCHORSubsystem::GetClipLength(const FChorusCuePoint Start, const FChorusCue
 		Length = 0;
 	}
 	else
-		Length = abs(End.Timestamp - Start.Timestamp);
+		Length = abs(End.Timestamp(this) - Start.Timestamp(this));
 }
 
 

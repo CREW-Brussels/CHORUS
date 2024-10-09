@@ -2,6 +2,7 @@
 
 #include "CoreMinimal.h"
 
+
 #include "FchorusCuePoint.generated.h"
 
 USTRUCT(BlueprintType)
@@ -19,7 +20,12 @@ struct FChorusCuePoint
 	bool operator<(const FChorusCuePoint& rhs) const { return Index < rhs.Index; }
 
 	bool operator>(const FChorusCuePoint& rhs) const { return Index > rhs.Index; }
-	
+
+	void SetTimestamp(double X)
+	{
+		_TimeStamp= X;
+	}
+
     UPROPERTY(BlueprintReadOnly)
 	int Fps;
 	
@@ -29,6 +35,9 @@ struct FChorusCuePoint
     UPROPERTY(BlueprintReadOnly)
     int Index;
 
-    UPROPERTY(BlueprintReadOnly)
-    float Timestamp;
+    //UFUNCTION(BlueprintCallable)
+    double const Timestamp(class UCHORSubsystem* Subsystem);
+
+private:
+	double _TimeStamp;
 };
