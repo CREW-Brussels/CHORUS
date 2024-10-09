@@ -42,6 +42,7 @@ struct CHORUS_API FCHORRec: public FAnimNode_Base
 
 	FCHORRec();
 private:
+	friend class CHORSubsystem;
 	
 	UPROPERTY()
 	bool _bRecord;
@@ -60,8 +61,8 @@ private:
 
 	void ReadPins();
 
-	double DeltaTime;
 	double CurrentTime;
+	double DeltaTime;
 	double RemainderTime;
 	double FrameDelta;
 };

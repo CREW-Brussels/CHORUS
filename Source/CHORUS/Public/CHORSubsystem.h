@@ -98,9 +98,7 @@ public:
 		, UPARAM(DisplayName = "Is Playing") bool &bIsPlaying
 		, UPARAM(DisplayName = "isLoop") bool &bIsLoop
 		, UPARAM(DisplayName = "Speed") float &Speed);
-
-
-	UFUNCTION(BlueprintCallable, Category="Chorus")
+	
 	 
 	/**
 	 * Plays from a specific CuePoint for a given duration.

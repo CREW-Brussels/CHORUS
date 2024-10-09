@@ -10,6 +10,15 @@ struct FChorusPlayHead
 	FChorusPlayHead();
 
 	UPROPERTY()
+	int SeekPoint;
+	
+	UPROPERTY()
+	double StartTime;
+
+	UPROPERTY()
+	double EndTime;
+	
+	UPROPERTY()
 	int32 StartFrame;
 
 	UPROPERTY()
