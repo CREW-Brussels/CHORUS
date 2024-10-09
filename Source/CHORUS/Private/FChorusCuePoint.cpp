@@ -28,7 +28,7 @@ double const FChorusCuePoint::Timestamp(UCHORSubsystem *Subsystem)
 {
     if (_TimeStamp != -1)
         return _TimeStamp;
-    if (Subsystem == NULL || !Subsystem->Tracks.Contains(Track) || Subsystem->Tracks[Track].Frames.IsValidIndex(Index))
+    if (Subsystem == NULL || !Subsystem->Tracks.Contains(Track) || !Subsystem->Tracks[Track].Frames.IsValidIndex(Index))
         return 0;
     return Subsystem->Tracks[Track].Frames[Index].time;
 }

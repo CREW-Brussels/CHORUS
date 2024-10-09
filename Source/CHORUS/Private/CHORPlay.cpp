@@ -209,7 +209,7 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
             {
                 double nt = frames[i].time;
                 if (CurrentTime >= t && CurrentTime < nt)
-                    {
+                {
                     InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
                 }
                 t = nt;

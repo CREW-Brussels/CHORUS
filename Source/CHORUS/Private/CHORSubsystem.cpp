@@ -4,7 +4,6 @@
 
 #include "CHORSubsystem.h"
 
-#include "EntitySystem/MovieSceneEntitySystemTypes.h"
 #include "Kismet/GameplayStatics.h"
 
 int UCHORSubsystem::GetNextControlId()
@@ -16,7 +15,7 @@ void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
 {
     if (!Tracks.Contains(CuePoint.Track))
         Tracks.Add(CuePoint.Track);
-    CuePoint.Index = Tracks[CuePoint.Track].Frames.Num();
+    CuePoint.Index = Tracks[CuePoint.Track].Frames.Num()-1;
     Tracks[CuePoint.Track].CuePoints.Add(CuePoint);
 }
 

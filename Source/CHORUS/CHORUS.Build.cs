@@ -38,9 +38,7 @@ public class CHORUS : ModuleRules
 				"CoreUObject",
 				"Engine",
 				"Slate",
-				"SlateCore",
-				"AnimGraph",
-                "BlueprintGraph"
+				"SlateCore"
                 
 				// ... add private dependencies that you statically link with here ...	
 			}
