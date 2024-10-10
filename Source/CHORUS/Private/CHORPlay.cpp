@@ -162,6 +162,9 @@ void FCHORPlay::InitializePlayHead()
 
 void FCHORPlay::InterpolatePose(const FChorusFrame &FrameA, const FChorusFrame &FrameB, const float Alpha, FPoseContext& Output) const
 {
+    if (FrameA.pose.Num() != Output.Pose.GetNumBones() || FrameB.pose.Num() != Output.Pose.GetNumBones())
+        return;
+
     for (int32 BoneIndex = 0; BoneIndex < FrameA.pose.Num(); ++BoneIndex)
     {
         Output.Pose[FCompactPoseBoneIndex(BoneIndex)].Blend(FrameA.pose[BoneIndex], FrameB.pose[BoneIndex], Alpha);
@@ -179,23 +182,22 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
     CurrentTime += DeltaTime * ChorusSubSystem->ControlIds[_ControlID].Speed;
     const TArray<FChorusFrame>& frames = ChorusSubSystem->Tracks[PlayHead.Track].Frames;
     
-    if (PlayHead.FrameCount > 1) {
-
-        //double t = frames[PlayHead.StartFrame].time;
+    if (PlayHead.FrameCount > 1)
+    {
         double t = PlayHead.StartTime;
         
-        if (CurrentTime < t) {
-            //CurrentTime += frames[PlayHead.EndFrame-1].time - frames[PlayHead.StartFrame].time;
+        if (CurrentTime < t)
+        {
             CurrentTime += PlayHead.EndTime - PlayHead.StartTime;
         }
-        //if (CurrentTime >= frames[PlayHead.EndFrame-1].time) {
         if (CurrentTime >= PlayHead.EndTime)
         {
-            if (ChorusSubSystem->ControlIds[_ControlID].bLoop) {
-                //CurrentTime -= frames[PlayHead.EndFrame-1].time - frames[PlayHead.StartFrame].time;
+            if (ChorusSubSystem->ControlIds[_ControlID].bLoop)
+            {
                 CurrentTime -= PlayHead.EndTime - PlayHead.StartTime;
             }
-            else {
+            else
+            {
                 ChorusSubSystem->ControlIds[_ControlID].bPlay = false;
                 return false;
             }
@@ -207,16 +209,12 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         {
             for (int i = PlayHead.StartFrame + 1; i < ChorusSubSystem->Tracks[PlayHead.Track].Frames.Num(); i++)
             {
-                if (frames.IsValidIndex(i)) {
-                    double nt = frames[i].time;
-                    if (CurrentTime >= t && CurrentTime < nt)
+                double nt = frames[i].time;
+                if (CurrentTime >= t && CurrentTime < nt)
                     {
-                        if (frames.IsValidIndex(i - 1)) {
-                            InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
-                        }
-                    }
-                    t = nt;
+                    InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
                 }
+                t = nt;
             }
         }
     }
@@ -226,8 +224,4 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
 
 FCHORPlay::FCHORPlay(): ChorusSubSystem(nullptr)
 {
-    // _Speed = Speed = 1;
-    // _bLoop = bLoop = false;
-    // _bPlay = bPlay = false;
-    // _ControlID = ControlID = 0;
 }

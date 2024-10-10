@@ -16,6 +16,7 @@ void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
     if (!Tracks.Contains(CuePoint.Track))
         Tracks.Add(CuePoint.Track);
     CuePoint.Index = Tracks[CuePoint.Track].Frames.Num()-1;
+	CuePoint.Index = CuePoint.Index < 0 ? 0 : CuePoint.Index;
     Tracks[CuePoint.Track].CuePoints.Add(CuePoint);
 }
 
@@ -33,14 +34,11 @@ FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const int32 ControlId, const b
         return CuePoint;
     }
 	
-    int sec = 0;
-    double time = 0;
+
 
     CuePoint.Track = ControlIds[ControlId].Track;
-    UGameplayStatics::GetAccurateRealTime(sec, time);
-    time += sec;
-    //CuePoint.Timestamp = time;
     ControlIds[ControlId].bIsRecording = Recording;
+	
     RegisterCuePoint(CuePoint);
     return CuePoint;
 }
