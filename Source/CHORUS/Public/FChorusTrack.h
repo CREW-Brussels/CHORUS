@@ -9,8 +9,9 @@ struct FChorusFrame
 {
 	GENERATED_BODY()
 public:
-
+	UPROPERTY()
 	TArray<FTransform> pose;
+	UPROPERTY()
 	double time;
 };
 
@@ -22,8 +23,11 @@ struct FChorusTrack
 public:
 	FChorusTrack();
 	
+	UPROPERTY()
 	TArray<FChorusFrame> Frames;
+	UPROPERTY()
 	TArray<FChorusCuePoint> CuePoints;
+	UPROPERTY()
 	int32 Fps;
 	void SetFps(int32 Fps);
 };
