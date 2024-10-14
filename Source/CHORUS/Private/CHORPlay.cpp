@@ -215,20 +215,19 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
             int FrameNum = frames.Num() - 1;
             for (int i = PlayHead.StartFrame + 1; i < FrameNum; i++)
             {
-                if (frames.IsValidIndex(i) && frames.IsValidIndex(i - 1)) {
-                    double nt = frames[i].time;
-                    if (CurrentTime >= t && CurrentTime < nt)
-                    {
-                        InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
-                    }
-                    t = nt;
+                double nt = frames[i].time;
+                if (CurrentTime >= t && CurrentTime < nt)
+                {
+                    InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
                 }
+                t = nt;
             }
         }
     }
     
     return true;
 }
+
 
 FCHORPlay::FCHORPlay(): ChorusSubSystem(nullptr)
 {
