@@ -15,7 +15,7 @@ void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
 {
     if (!Tracks.Contains(CuePoint.Track))
         Tracks.Add(CuePoint.Track);
-    CuePoint.Index = Tracks[CuePoint.Track].Frames.Num()-1;
+    CuePoint.Index = Tracks[CuePoint.Track].Frames.Num() - 1;
 	CuePoint.Index = CuePoint.Index < 0 ? 0 : CuePoint.Index;
     Tracks[CuePoint.Track].CuePoints.Add(CuePoint);
 }
@@ -116,11 +116,8 @@ int32 UCHORSubsystem::RegisterRecorder(const int32 Track, const bool bRecord, co
 
 void UCHORSubsystem::RecordFrame(int32 Track, const FChorusFrame& frame)
 {
-	// int sec = 0;
-	// double time = 0;
-	//FPlatformTime::Seconds();
-	
 	Tracks[Track].Frames.Push(frame);
+	Tracks[Track].Frames.Last().FrameReady = true;
 }
 
 UCHORSubsystem::UCHORSubsystem()

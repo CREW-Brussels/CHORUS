@@ -132,7 +132,7 @@ void FCHORPlay::InitializePlayHead()
     PlayHead.EndTime = ControlStruct.End.Timestamp(ChorusSubSystem);
 
     PlayHead.StartFrame = ControlStruct.Start.Index;
-    PlayHead.EndFrame = ControlStruct.End.Index;
+    //PlayHead.EndFrame = ControlStruct.End.Index;
 
     if (PlayHead.StartFrame == -1)
     {
@@ -145,17 +145,17 @@ void FCHORPlay::InitializePlayHead()
         }
     }
 
-    if (PlayHead.EndFrame == -1)
-    {
-        for (int i = 0; i < ChorusSubSystem->Tracks[PlayHead.Track].Frames.Num(); i++)
-        {
-            PlayHead.EndFrame = i;
-            if (ChorusSubSystem->Tracks[PlayHead.Track].Frames[i].time >= PlayHead.EndTime)
-                break;
-        }
-    }
+    // if (PlayHead.EndFrame == -1)
+    // {
+    //     for (int i = 0; i < ChorusSubSystem->Tracks[PlayHead.Track].Frames.Num(); i++)
+    //     {
+    //         PlayHead.EndFrame = i;
+    //         if (ChorusSubSystem->Tracks[PlayHead.Track].Frames[i].time >= PlayHead.EndTime)
+    //             break;
+    //     }
+    // }
     
-    PlayHead.FrameCount = PlayHead.EndFrame - PlayHead.StartFrame + 1;
+    //PlayHead.FrameCount = PlayHead.EndFrame - PlayHead.StartFrame + 1;
     PlayHead.Length = (ControlStruct.End.Timestamp(ChorusSubSystem) - ControlStruct.Start.Timestamp(ChorusSubSystem)) / ControlStruct.Speed;
     PlayHead.Timestamp = time += sec;
 }
@@ -177,20 +177,25 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         return false;
     
     if (PlayHead.Track == 0)
+    {
         InitializePlayHead();
+    }
     
     CurrentTime += DeltaTime * ChorusSubSystem->ControlIds[_ControlID].Speed;
     const TArray<FChorusFrame>& frames = ChorusSubSystem->Tracks[PlayHead.Track].Frames;
     
-    if (PlayHead.FrameCount > 1)
+    if (frames.Num() - 2 >= 0)
     {
         double t = PlayHead.StartTime;
+
+        if( CurrentTime >= frames[frames.Num() - 2].time)
+            CurrentTime = frames[frames.Num() - 2].time - UE_DOUBLE_SMALL_NUMBER;
         
         if (CurrentTime < t)
         {
             CurrentTime += PlayHead.EndTime - PlayHead.StartTime;
         }
-        if (CurrentTime >= PlayHead.EndTime)
+        if (CurrentTime > PlayHead.EndTime)
         {
             if (ChorusSubSystem->ControlIds[_ControlID].bLoop)
             {
@@ -207,7 +212,8 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
             InterpolatePose(frames[PlayHead.StartFrame], frames[PlayHead.StartFrame], (0), Output);
         else
         {
-            for (int i = PlayHead.StartFrame + 1; i < ChorusSubSystem->Tracks[PlayHead.Track].Frames.Num(); i++)
+            int FrameNum = frames.Num() - 1;
+            for (int i = PlayHead.StartFrame + 1; i < FrameNum; i++)
             {
                 double nt = frames[i].time;
                 if (CurrentTime >= t && CurrentTime < nt)

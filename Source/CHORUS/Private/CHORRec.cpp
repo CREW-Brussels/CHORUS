@@ -103,7 +103,8 @@ void FCHORRec::Evaluate_AnyThread(FPoseContext& Output)
         FChorusFrame frame;
         frame.pose = Output.Pose.GetBones();
         frame.time = CurrentTime;
-
+        frame.FrameReady = false;
+        
         RemainderTime = FMath::Fmod(RemainderTime, FrameDelta);
 
         ChorusSubSystem->RecordFrame(ChorusSubSystem->ControlIds[_ControlID].Track, frame);

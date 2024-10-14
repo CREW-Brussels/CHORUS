@@ -20,19 +20,13 @@ struct FChorusPlayHead
 	
 	UPROPERTY()
 	int32 StartFrame;
-
-	UPROPERTY()
-	int32 EndFrame;
-
-	UPROPERTY()
-	int32 FrameCount;
-
+	
 	UPROPERTY()
 	int32 Track;
 
 	UPROPERTY()
-	float Length;
+	double Length;
 
 	UPROPERTY()
-	float Timestamp;
+	double Timestamp;
 };

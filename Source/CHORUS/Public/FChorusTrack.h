@@ -9,7 +9,7 @@ struct FChorusFrame
 {
 	GENERATED_BODY()
 public:
-
+	bool FrameReady;
 	TArray<FTransform> pose;
 	double time;
 };
