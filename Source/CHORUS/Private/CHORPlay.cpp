@@ -215,12 +215,14 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
             int FrameNum = frames.Num() - 1;
             for (int i = PlayHead.StartFrame + 1; i < FrameNum; i++)
             {
-                double nt = frames[i].time;
-                if (CurrentTime >= t && CurrentTime < nt)
+                if (frames.IsValidIndex(i) && frames.IsValidIndex(i - 1)) {
+                    double nt = frames[i].time;
+                    if (CurrentTime >= t && CurrentTime < nt)
                     {
-                    InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
+                        InterpolatePose(frames[i - 1], frames[i], (CurrentTime - t) / (nt - t), Output);
+                    }
+                    t = nt;
                 }
-                t = nt;
             }
         }
     }
