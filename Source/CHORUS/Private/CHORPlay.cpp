@@ -165,12 +165,9 @@ void FCHORPlay::InitializePlayHead()
 void FCHORPlay::InterpolatePose(const FChorusFrame &FrameA, const FChorusFrame &FrameB, const float Alpha, FPoseContext& Output) const
 {
     if (FrameA.pose.Num() != Output.Pose.GetNumBones() || FrameB.pose.Num() != Output.Pose.GetNumBones()) {
-        UE_LOG(LogTemp, Warning, TEXT("Input: %d"), Output.Pose.GetNumBones());
-        UE_LOG(LogTemp, Warning, TEXT("FrameA: %d"), FrameA.pose.Num());
-        UE_LOG(LogTemp, Warning, TEXT("FrameB: %d"), FrameB.pose.Num());
+        UE_LOG(LogTemp, Warning, TEXT("Input: %d, FrameA: %d, FrameB: %d"), Output.Pose.GetNumBones(), FrameA.pose.Num(), FrameB.pose.Num());
         return;
     }
-    UE_LOG(LogTemp, Warning, TEXT("Input: %d"), Output.Pose.GetNumBones());
     for (int32 BoneIndex = 0; BoneIndex < FrameA.pose.Num(); ++BoneIndex)
     {
         Output.Pose[FCompactPoseBoneIndex(BoneIndex)].Blend(FrameA.pose[BoneIndex], FrameB.pose[BoneIndex], Alpha);
