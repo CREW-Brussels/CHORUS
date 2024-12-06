@@ -88,10 +88,10 @@ void FCHORRec::Update_AnyThread(const FAnimationUpdateContext& Context)
 
 void FCHORRec::Evaluate_AnyThread(FPoseContext& Output)
 {
+    Base.Evaluate(Output);
+
     if (ChorusSubSystem == nullptr)
         return;
-    
-    Base.Evaluate(Output);
 
     if (_ControlID == 0)
         _ControlID = ControlID;

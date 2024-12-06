@@ -85,8 +85,10 @@ void FCHORPlay::CacheBones_AnyThread(const FAnimationCacheBonesContext& Context)
 
 void FCHORPlay::Evaluate_AnyThread(FPoseContext& Output)
 {
-    if (ChorusSubSystem == nullptr)
+    if (ChorusSubSystem == nullptr) {
+        Base.Evaluate(Output);
         return;
+    }
 
     if (_ControlID == 0)
         _ControlID = ControlID;
@@ -162,9 +164,13 @@ void FCHORPlay::InitializePlayHead()
 
 void FCHORPlay::InterpolatePose(const FChorusFrame &FrameA, const FChorusFrame &FrameB, const float Alpha, FPoseContext& Output) const
 {
-    if (FrameA.pose.Num() != Output.Pose.GetNumBones() || FrameB.pose.Num() != Output.Pose.GetNumBones())
+    if (FrameA.pose.Num() != Output.Pose.GetNumBones() || FrameB.pose.Num() != Output.Pose.GetNumBones()) {
+        UE_LOG(LogTemp, Warning, TEXT("Input: %d"), Output.Pose.GetNumBones());
+        UE_LOG(LogTemp, Warning, TEXT("FrameA: %d"), FrameA.pose.Num());
+        UE_LOG(LogTemp, Warning, TEXT("FrameB: %d"), FrameB.pose.Num());
         return;
-
+    }
+    UE_LOG(LogTemp, Warning, TEXT("Input: %d"), Output.Pose.GetNumBones());
     for (int32 BoneIndex = 0; BoneIndex < FrameA.pose.Num(); ++BoneIndex)
     {
         Output.Pose[FCompactPoseBoneIndex(BoneIndex)].Blend(FrameA.pose[BoneIndex], FrameB.pose[BoneIndex], Alpha);
