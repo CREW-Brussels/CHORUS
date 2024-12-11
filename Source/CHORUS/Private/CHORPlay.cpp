@@ -190,19 +190,20 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
     if (frames.Num() - 2 >= 0)
     {
         double t = PlayHead.StartTime;
+        double true_end = FMath::Min(PlayHead.EndTime, frames[frames.Num() - 2].time);
 
-        if( CurrentTime >= frames[frames.Num() - 2].time)
-            CurrentTime = frames[frames.Num() - 2].time - UE_DOUBLE_SMALL_NUMBER;
+        //if( CurrentTime >= frames[frames.Num() - 2].time)
+        //    CurrentTime = frames[frames.Num() - 2].time - UE_DOUBLE_SMALL_NUMBER;
         
         if (CurrentTime < t)
         {
-            CurrentTime += PlayHead.EndTime - PlayHead.StartTime;
+            CurrentTime += true_end - PlayHead.StartTime;
         }
-        if (CurrentTime > PlayHead.EndTime)
+        if (CurrentTime > true_end)
         {
             if (ChorusSubSystem->ControlIds[_ControlID].bLoop)
             {
-                CurrentTime -= PlayHead.EndTime - PlayHead.StartTime;
+                CurrentTime -= true_end - PlayHead.StartTime;
             }
             else
             {
