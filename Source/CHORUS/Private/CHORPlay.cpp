@@ -38,7 +38,6 @@ void FCHORPlay::Initialize_AnyThread(const FAnimationInitializeContext& Context)
 
     if (ChorusSubSystem != nullptr)
     {
-        _ControlID = ChorusSubSystem->RegisterPlayer(ControlID, _Start, _End, _Speed, _bLoop, _bPlay);
         ReadPins();
     }
 }
@@ -48,6 +47,7 @@ void FCHORPlay::ReadPins()
     if (_ControlID == 0)
     {
         _ControlID = ControlID == 0 ? ChorusSubSystem->GetNextControlId() : ControlID;
+        _ControlID = ChorusSubSystem->RegisterPlayer(ControlID, _Start, _End, _Speed, _bLoop, _bPlay);
     }
     
     if (Start != _Start)

@@ -49,7 +49,7 @@ int32 UCHORSubsystem::RegisterControlId(int32 ControlId, const FControlStruct &N
         ControlId = GetNextControlId();
     else if (ControlIds.Contains(ControlId))
     {
-        UE_LOG(LogTemp, Warning, TEXT("ControlId not available."));
+        UE_LOG(LogTemp, Error, TEXT("ControlId not available."));
         return 0;
     }
 

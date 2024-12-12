@@ -25,22 +25,22 @@ struct CHORUS_API FCHORPlay: public FAnimNode_Base
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Links)
 	FPoseLink Base;
 	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
 	FChorusCuePoint Start;
 	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
 	FChorusCuePoint End;
 	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
 	float Speed = 1;
 	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
 	bool bLoop = false;
 	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
 	bool bPlay = false;
 	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinShownByDefault))
+	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
 	int32 ControlID = 0;
 	
 	virtual void Initialize_AnyThread(const FAnimationInitializeContext& Context) override;
