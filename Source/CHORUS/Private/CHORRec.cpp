@@ -9,6 +9,8 @@
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CHORRec)
 
+
+
 void FCHORRec::Initialize_AnyThread(const FAnimationInitializeContext& Context)
 {
     ChorusSubSystem = nullptr;
@@ -16,7 +18,7 @@ void FCHORRec::Initialize_AnyThread(const FAnimationInitializeContext& Context)
     {
         if (const UAnimInstance* AnimInstance = Cast<UAnimInstance>(Context.AnimInstanceProxy->GetAnimInstanceObject()))
         {
-            const AActor* Owner = AnimInstance->GetOwningComponent()->GetOwner();
+            Owner = AnimInstance->GetOwningComponent()->GetOwner();
             if (Owner && IsValid(Owner->GetGameInstance()))
             {
                 ChorusSubSystem = Owner->GetGameInstance()->GetSubsystem<UCHORSubsystem>();
@@ -32,42 +34,10 @@ void FCHORRec::Initialize_AnyThread(const FAnimationInitializeContext& Context)
 
     CurrentTime = 0.0;
     DeltaTime = 0.0;
-    _Fps = -1;
-    if (ChorusSubSystem != nullptr)
+    if (ChorusSubSystem != nullptr && Owner != nullptr)
     {
-        _ControlID = ChorusSubSystem->RegisterRecorder(_Track, _bRecord, ControlID);
-        ReadPins();
-    }
-}
+        ChorusSubSystem->RegisterRecorder(Owner);
 
-void FCHORRec::ReadPins()
-{
-
-    if (_ControlID == 0)
-    {
-        UE_LOG(LogTemp, Error, TEXT("ControlID is 0, Control ID should not be 0 here."));
-        return;
-    }
-
-    if (Fps != _Fps)
-    {
-        _Fps = Fps;
-        FrameDelta = 1.0 / (double)_Fps;
-        RemainderTime = FrameDelta;
-        if (ChorusSubSystem->Tracks.Contains(ChorusSubSystem->ControlIds[_ControlID].Track))
-        ChorusSubSystem->Tracks[ChorusSubSystem->ControlIds[_ControlID].Track].SetFps(Fps);
-    }
-    
-    if (bRecord != _bRecord)
-    {
-        _bRecord = bRecord;
-        ChorusSubSystem->ControlIds[_ControlID].bIsRecording = _bRecord;
-    }
-
-    if (Track != _Track)
-    {
-        _Track = Track;
-        ChorusSubSystem->ControlIds[_ControlID].Track = _Track;
     }
 }
 
@@ -81,25 +51,20 @@ void FCHORRec::Update_AnyThread(const FAnimationUpdateContext& Context)
     DeltaTime = Context.GetDeltaTime();
     Base.Update(Context);
     GetEvaluateGraphExposedInputs().Execute(Context);
-
-    if (ChorusSubSystem != nullptr)
-        ReadPins();
 }
 
 void FCHORRec::Evaluate_AnyThread(FPoseContext& Output)
 {
     Base.Evaluate(Output);
 
-    if (ChorusSubSystem == nullptr)
+    if (ChorusSubSystem == nullptr || Owner == nullptr)
         return;
-
-    if (_ControlID == 0)
-        _ControlID = ControlID;
 
     RemainderTime += DeltaTime;
     CurrentTime += DeltaTime;
-    if (ChorusSubSystem->ControlIds[_ControlID].bIsRecording && RemainderTime >= FrameDelta)
+    if (ChorusSubSystem->ControlIds[Owner].bIsRecording && RemainderTime >= FrameDelta)
     {
+        FrameDelta = 1.0 / (double)ChorusSubSystem->Tracks[ChorusSubSystem->ControlIds[Owner].Track].Fps;
         FChorusFrame frame;
         frame.pose = Output.Pose.GetBones();
         frame.time = CurrentTime;
@@ -107,18 +72,13 @@ void FCHORRec::Evaluate_AnyThread(FPoseContext& Output)
         
         RemainderTime = FMath::Fmod(RemainderTime, FrameDelta);
 
-        ChorusSubSystem->RecordFrame(ChorusSubSystem->ControlIds[_ControlID].Track, frame);
+        ChorusSubSystem->RecordFrame(ChorusSubSystem->ControlIds[Owner].Track, frame);
     }
 }
 
-FCHORRec::FCHORRec()
-    : bRecord()
-    , Track()
-    , ControlID()
+FCHORRec::FCHORRec():
+    Owner(nullptr)
 {
-    // _bRecord = bRecord;
-    // _Track = Track;
-    // _ControlID = ControlID;
 }
 
 

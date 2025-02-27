@@ -9,6 +9,7 @@
 #include "GameFramework/Pawn.h"
 #include "Animation/AnimInstanceProxy.h"
 #include "Kismet/GameplayStatics.h"
+#include "Microsoft/AllowMicrosoftPlatformTypes.h"
 #include "UObject/FastReferenceCollector.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CHORPlay)
@@ -21,7 +22,7 @@ void FCHORPlay::Initialize_AnyThread(const FAnimationInitializeContext& Context)
         const UAnimInstance* AnimInstance = Cast<UAnimInstance>(Context.AnimInstanceProxy->GetAnimInstanceObject());
         if (AnimInstance)
         {
-            const AActor* Owner = AnimInstance->GetOwningComponent()->GetOwner();
+            Owner = AnimInstance->GetOwningComponent()->GetOwner();
             if (Owner && IsValid(Owner->GetGameInstance()))
             {
                 ChorusSubSystem = Owner->GetGameInstance()->GetSubsystem<UCHORSubsystem>();
@@ -36,44 +37,9 @@ void FCHORPlay::Initialize_AnyThread(const FAnimationInitializeContext& Context)
     Base.Initialize(Context);
     CurrentTime = 0.0;
 
-    if (ChorusSubSystem != nullptr)
+    if (ChorusSubSystem != nullptr && Owner != nullptr)
     {
-        ReadPins();
-    }
-}
-
-void FCHORPlay::ReadPins()
-{
-    if (_ControlID == 0)
-    {
-        _ControlID = ControlID == 0 ? ChorusSubSystem->GetNextControlId() : ControlID;
-        _ControlID = ChorusSubSystem->RegisterPlayer(ControlID, _Start, _End, _Speed, _bLoop, _bPlay);
-    }
-    
-    if (Start != _Start)
-    {
-        _Start = Start;
-        ChorusSubSystem->ControlIds[_ControlID].Start = _Start;
-    }
-    if (End != _End)
-    {
-        _End = End;
-        ChorusSubSystem->ControlIds[_ControlID].End = _End;
-    }
-    if (Speed != _Speed)
-    {
-        _Speed = Speed;
-        ChorusSubSystem->ControlIds[_ControlID].Speed = _Speed;
-    }
-    if (bLoop != _bLoop)
-    {
-        _bLoop = bLoop;
-        ChorusSubSystem->ControlIds[_ControlID].bLoop = _bLoop;
-    }
-    if (bPlay != _bPlay)
-    {
-        _bPlay = bPlay;
-        ChorusSubSystem->ControlIds[_ControlID].bPlay = _bPlay;
+        ChorusSubSystem->RegisterPlayer(Owner);
     }
 }
 
@@ -89,16 +55,11 @@ void FCHORPlay::Evaluate_AnyThread(FPoseContext& Output)
         Base.Evaluate(Output);
         return;
     }
-
-    if (_ControlID == 0)
-        _ControlID = ControlID;
     
-    if (  !( ChorusSubSystem->ControlIds[_ControlID].bPlay && ReplayRecording(Output) )  )
+    if (  !( ChorusSubSystem->ControlIds[Owner].bPlay && ReplayRecording(Output) )  )
     {
         Base.Evaluate(Output);
     }
-
-    ReadPins();
 }
 
 void FCHORPlay::Update_AnyThread(const FAnimationUpdateContext& Context)
@@ -113,13 +74,13 @@ void FCHORPlay::InitializePlayHead()
     if (ChorusSubSystem == nullptr)
         return;
     
-    FControlStruct ControlStruct = ChorusSubSystem->ControlIds[_ControlID];
+    FControlStruct ControlStruct = ChorusSubSystem->ControlIds[Owner];
     ControlStruct.Speed = ControlStruct.Speed != 0 ? ControlStruct.Speed : 1;
     
     if (ControlStruct.Start.Track != ControlStruct.End.Track ||
         !ChorusSubSystem->Tracks.Contains(ControlStruct.Start.Track))
     {
-        ChorusSubSystem->ControlIds[_ControlID].bPlay = false;
+        ChorusSubSystem->ControlIds[Owner].bPlay = false;
         PlayHead.Track = 0;
         return;
     }
@@ -184,7 +145,7 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         InitializePlayHead();
     }
     
-    CurrentTime += DeltaTime * ChorusSubSystem->ControlIds[_ControlID].Speed;
+    CurrentTime += DeltaTime * ChorusSubSystem->ControlIds[Owner].Speed;
     const TArray<FChorusFrame>& frames = ChorusSubSystem->Tracks[PlayHead.Track].Frames;
     
     if (frames.Num() - 2 >= 0)
@@ -201,13 +162,13 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         }
         if (CurrentTime > true_end)
         {
-            if (ChorusSubSystem->ControlIds[_ControlID].bLoop)
+            if (ChorusSubSystem->ControlIds[Owner].bLoop)
             {
                 CurrentTime -= true_end - PlayHead.StartTime;
             }
             else
             {
-                ChorusSubSystem->ControlIds[_ControlID].bPlay = false;
+                ChorusSubSystem->ControlIds[Owner].bPlay = false;
                 return false;
             }
         }
@@ -233,6 +194,7 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
 }
 
 
-FCHORPlay::FCHORPlay(): ChorusSubSystem(nullptr)
+FCHORPlay::FCHORPlay():ChorusSubSystem(nullptr),
+Owner(nullptr)
 {
 }

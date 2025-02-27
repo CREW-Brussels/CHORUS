@@ -21,18 +21,18 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-	int32 RegisterPlayer(int32 ControlId, const FChorusCuePoint &Start, const FChorusCuePoint &End, float Speed, bool bLoop, bool bPlay);
-	int32 RegisterControlId(int32 ControlId, const FControlStruct &NewControl);
-	int32 RegisterRecorder(int32 Track, bool bRecord, int32 ControlId);
+	void RegisterPlayer(AActor* ControlId);
+	void RegisterControlId(AActor* ControlId, const FControlStruct& NewControl);
+	void RegisterRecorder(AActor* ControlId);
 	int32 GetNextControlId();
-	void UnregisterPlayer(int32 ControlId);
+	void UnregisterPlayer(AActor* ControlId);
 	void RecordFrame(int32 Track, const FChorusFrame &frame);
-	void UnregisterRecorder(int32 ControlId);
+	void UnregisterRecorder(AActor* ControlId);
 	void RegisterCuePoint(FChorusCuePoint& CuePoint);
-	FChorusCuePoint PlayPauseRecorder(int32 ControlId, bool Recording);
+	FChorusCuePoint PlayPauseRecorder(const AActor* ControlId, bool Recording, int32 Track = -1);
 
 	UPROPERTY()
-	TMap<int32, FControlStruct> ControlIds;
+	TMap<AActor*, FControlStruct> ControlIds;
 
 	UPROPERTY()
 	TMap<int32, FChorusTrack> Tracks;
@@ -51,9 +51,14 @@ public:
 	* @Param a CuePoint to this event
     */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void ControlRecorder(int32 ControlID
-	                                  , bool Record
-	                                  , UPARAM(DisplayName = "Cue Point") FChorusCuePoint &CuePoint);
+	void ControlRecorder(AActor* ControlID
+	                     , bool Record
+	                     , UPARAM(DisplayName = "Cue Point") FChorusCuePoint& CuePoint);
+	UFUNCTION(BlueprintCallable, Category="Chorus")
+	void StartRecording(AActor* ControlID, int32 Track, FChorusCuePoint& CuePoint);
+
+	UFUNCTION(BlueprintCallable, Category="Chorus")
+	void StopRecording(AActor* ControlID, FChorusCuePoint& CuePoint);
 
 	/**
 	 * Control the parameters of the ChorusPlayer animation node with a specific ControlID
@@ -64,12 +69,12 @@ public:
 	 * @param Loop if true the clip will loop
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void ControlPlayer(int32 ControlID
-		, FChorusCuePoint Start
-		, FChorusCuePoint End
-		, float Speed
-		, bool Loop
-		, bool Play);
+	void ControlPlayer(AActor* ControlID
+	                   , FChorusCuePoint Start
+	                   , FChorusCuePoint End
+	                   , float Speed
+	                   , bool Loop
+	                   , bool Play);
 
 	/**
 	 * 
@@ -78,9 +83,9 @@ public:
 	 * @param Track 
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void GetRecorderStatus(int32 ControlID
-		, UPARAM(DisplayName = "Is Recording") bool &bIsRecording
-		, UPARAM(DisplayName = "Track") int32 &Track);
+	void GetRecorderStatus(AActor* ControlID
+	                       , UPARAM(DisplayName = "Is Recording") bool& bIsRecording
+	                       , UPARAM(DisplayName = "Track") int32& Track);
 
 	/**
 	 * 
@@ -92,12 +97,12 @@ public:
 	 * @param Speed 
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void GetPlayerStatus(int32 ControlID
-		, UPARAM(DisplayName = "Start") FChorusCuePoint &Start
-		, UPARAM(DisplayName = "End") FChorusCuePoint &End
-		, UPARAM(DisplayName = "Is Playing") bool &bIsPlaying
-		, UPARAM(DisplayName = "isLoop") bool &bIsLoop
-		, UPARAM(DisplayName = "Speed") float &Speed);
+	void GetPlayerStatus(AActor* ControlID
+	                     , UPARAM(DisplayName = "Start") FChorusCuePoint& Start
+	                     , UPARAM(DisplayName = "End") FChorusCuePoint& End
+	                     , UPARAM(DisplayName = "Is Playing") bool& bIsPlaying
+	                     , UPARAM(DisplayName = "isLoop") bool& bIsLoop
+	                     , UPARAM(DisplayName = "Speed") float& Speed);
 	
 	 
 	/**
@@ -111,7 +116,7 @@ public:
 	 * @param Play if true, starts playing, otherwise pauses
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Chorus")
-	void PlayFromCuePointForDuration(int32 ControlID, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play);
+	void PlayFromCuePointForDuration(AActor* ControlID, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play);
 	
 	/**
 	 * Determine if a Track is currently recording
@@ -187,7 +192,7 @@ public:
 
 private:
 	
-	bool UnregisterControlId(int32 ControlId);
+	bool UnregisterControlId(AActor* ControlId);
 	UPROPERTY()
     int32 NextControlId;
 };

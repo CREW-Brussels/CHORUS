@@ -22,18 +22,6 @@ struct CHORUS_API FCHORRec: public FAnimNode_Base
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Links)
 	FPoseLink Base;
 	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings, meta = (PinHiddenByDefault))
-	bool bRecord;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings, meta = (PinHiddenByDefault))
-	int32 Track;
-	
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings, meta = (PinHiddenByDefault))
-	int32 ControlID;
-
-	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Settings, meta = (PinHiddenByDefault))
-	int32 Fps;
-	
 	virtual void Evaluate_AnyThread(FPoseContext& Output) override;
 	virtual void Initialize_AnyThread(const FAnimationInitializeContext& Context) override;
 	virtual void CacheBones_AnyThread(const FAnimationCacheBonesContext& Context) override;
@@ -43,23 +31,12 @@ struct CHORUS_API FCHORRec: public FAnimNode_Base
 	FCHORRec();
 private:
 	friend class CHORSubsystem;
-	
-	UPROPERTY()
-	bool _bRecord;
-	
-	UPROPERTY()
-	int32 _Track;
-	
-	UPROPERTY()
-	int32 _ControlID;
 
 	UPROPERTY()
-	int32 _Fps;
+	AActor* Owner;
 	
 	UPROPERTY()
     UCHORSubsystem* ChorusSubSystem;
-
-	void ReadPins();
 
 	double CurrentTime;
 	double DeltaTime;

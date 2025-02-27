@@ -25,24 +25,6 @@ struct CHORUS_API FCHORPlay: public FAnimNode_Base
 	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = Links)
 	FPoseLink Base;
 	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
-	FChorusCuePoint Start;
-	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
-	FChorusCuePoint End;
-	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
-	float Speed = 1;
-	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
-	bool bLoop = false;
-	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
-	bool bPlay = false;
-	
-	UPROPERTY(EditAnywhere, Category = Settings, meta = (PinHiddenByDefault))
-	int32 ControlID = 0;
-	
 	virtual void Initialize_AnyThread(const FAnimationInitializeContext& Context) override;
 	virtual bool NeedsOnInitializeAnimInstance() const override { return true; }
 	virtual void Update_AnyThread(const FAnimationUpdateContext& Context)override;
@@ -53,33 +35,17 @@ struct CHORUS_API FCHORPlay: public FAnimNode_Base
 
 private:
 	UPROPERTY()
+	AActor *Owner;
+	
+	UPROPERTY()
 	FChorusPlayHead PlayHead;
 
 	UPROPERTY()
 	UCHORSubsystem* ChorusSubSystem;
-
-	UPROPERTY()
-	FChorusCuePoint _Start;
 	
-	UPROPERTY()
-	FChorusCuePoint _End;
-	
-	UPROPERTY()
-	float _Speed = 1;
-	
-	UPROPERTY()
-	bool _bLoop = false;
-	
-	UPROPERTY()
-	bool _bPlay = false;
-	
-	UPROPERTY()
-	int32 _ControlID = 0;
-
 	void InterpolatePose(const FChorusFrame& FrameA, const FChorusFrame& FrameB, const float Alpha, FPoseContext& Output) const;
 	bool ReplayRecording(FPoseContext& Output);
 	void InitializePlayHead();
-	void ReadPins();
 
 	double DeltaTime;
 	double CurrentTime;

@@ -21,7 +21,7 @@ void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
 }
 
 
-FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const int32 ControlId, const bool Recording)
+FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const AActor *ControlId, const bool Recording, int32 Track)
 {
     FChorusCuePoint CuePoint;
 
@@ -35,7 +35,8 @@ FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const int32 ControlId, const b
     }
 	
 
-
+	if (Track != -1)
+		ControlIds[ControlId].Track = Track;
     CuePoint.Track = ControlIds[ControlId].Track;
     ControlIds[ControlId].bIsRecording = Recording;
 	
@@ -43,52 +44,33 @@ FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const int32 ControlId, const b
     return CuePoint;
 }
 
-int32 UCHORSubsystem::RegisterControlId(int32 ControlId, const FControlStruct &NewControl)
+void UCHORSubsystem::RegisterControlId(AActor* ControlId, const FControlStruct &NewControl)
 {
-    if (ControlId == 0)
-        ControlId = GetNextControlId();
-    else if (ControlIds.Contains(ControlId))
+    if (ControlIds.Contains(ControlId))
     {
         UE_LOG(LogTemp, Error, TEXT("ControlId not available."));
-        return 0;
+        return;
     }
-
-    if (NextControlId < ControlId)
-        NextControlId = ControlId;
     
     ControlIds.Add(ControlId, NewControl);
     
-    return ControlId;
+    return;
 }
 
-int32 UCHORSubsystem::RegisterPlayer(const int32 ControlId
-                                     , const FChorusCuePoint &Start
-                                     , const FChorusCuePoint &End
-                                     , const float Speed
-                                     , const bool bLoop
-                                     , const bool bPlay)
+void UCHORSubsystem::RegisterPlayer(AActor *ControlId)
 {
-
     FControlStruct NewControl;
 
-    NewControl.Start = Start;
-    NewControl.End = End;
-    NewControl.Speed = Speed;
-    NewControl.bLoop = bLoop;
-    NewControl.bPlay = bPlay;
-    NewControl.Track = Start.Track;
-    NewControl.Position = 0.0;
-
-    return RegisterControlId(ControlId, NewControl);
+    RegisterControlId(ControlId, NewControl);
 }
 
-void UCHORSubsystem::UnregisterPlayer(const int32 ControlId)
+void UCHORSubsystem::UnregisterPlayer(AActor *ControlId)
 {
     if (!UnregisterControlId(ControlId))
         UE_LOG(LogTemp, Warning, TEXT("UnregisterPlayerr(): ControlId not found ?!"))
 }
 
-bool UCHORSubsystem::UnregisterControlId(const int32 ControlId)
+bool UCHORSubsystem::UnregisterControlId(AActor *ControlId)
 {
     if (!ControlIds.IsEmpty() && ControlIds.Contains(ControlId))
     {
@@ -98,20 +80,17 @@ bool UCHORSubsystem::UnregisterControlId(const int32 ControlId)
     return false;
 }
 
-void UCHORSubsystem::UnregisterRecorder(const int32 ControlId)
+void UCHORSubsystem::UnregisterRecorder(AActor *ControlId)
 {
     if (!UnregisterControlId(ControlId))
         UE_LOG(LogTemp, Warning, TEXT("UnregisterRecorder(): ControlId not found ?!"))
 }
 
-int32 UCHORSubsystem::RegisterRecorder(const int32 Track, const bool bRecord, const int32 ControlId)
+void UCHORSubsystem::RegisterRecorder(AActor* ControlId)
 {
     FControlStruct NewControl;
-
-    NewControl.bIsRecording = bRecord;
-    NewControl.Track = Track;
-
-    return RegisterControlId(ControlId, NewControl);
+	
+    RegisterControlId(ControlId, NewControl);
 }
 
 void UCHORSubsystem::RecordFrame(int32 Track, const FChorusFrame& frame)
@@ -147,7 +126,7 @@ void UCHORSubsystem::GetTrackStatus(const int Track, bool& IsRecording)
 		return;
 	}
 	
-	TArray<int32> ControlKeys;
+	TArray<AActor*> ControlKeys;
 	ControlIds.GetKeys(ControlKeys);
 	for (int i = 0; i < ControlKeys.Num(); i++)
 	{
@@ -164,13 +143,22 @@ int32 UCHORSubsystem::GetNewControlId()
 	return GetNextControlId();
 }
 
-void UCHORSubsystem::ControlRecorder(const int32 ControlID, const bool Record, FChorusCuePoint &CuePoint)
+void UCHORSubsystem::ControlRecorder(AActor *ControlID, const bool Record, FChorusCuePoint &CuePoint)
 {
-    CuePoint = PlayPauseRecorder(ControlID, Record);
+    CuePoint = PlayPauseRecorder(ControlID, Record, -1);
 }
 
+void UCHORSubsystem::StartRecording(AActor *ControlID, int32 Track, FChorusCuePoint &CuePoint)
+{
+	CuePoint = PlayPauseRecorder(ControlID, true, Track);
+}
 
-void UCHORSubsystem::PlayFromCuePointForDuration(int32 ControlID, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play)
+void UCHORSubsystem::StopRecording(AActor *ControlID, FChorusCuePoint &CuePoint)
+{
+	CuePoint = PlayPauseRecorder(ControlID, false, -1);
+}
+
+void UCHORSubsystem::PlayFromCuePointForDuration(AActor *ControlID, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play)
 {
 	FChorusCuePoint End;
 	End.SetTimestamp(Start.Timestamp(this) + Duration);
@@ -181,7 +169,7 @@ void UCHORSubsystem::PlayFromCuePointForDuration(int32 ControlID, FChorusCuePoin
 }
 
 
-void UCHORSubsystem::ControlPlayer(const int32 ControlID
+void UCHORSubsystem::ControlPlayer(AActor *ControlID
                                            , const FChorusCuePoint Start
                                            , const FChorusCuePoint End
                                            , const float Speed
@@ -207,7 +195,7 @@ void UCHORSubsystem::ControlPlayer(const int32 ControlID
 	}
 }
 
-void UCHORSubsystem::GetRecorderStatus(const int32 ControlID, bool &bIsRecording, int32 &Track)
+void UCHORSubsystem::GetRecorderStatus(AActor *ControlID, bool &bIsRecording, int32 &Track)
 {
 	if (ControlIds.Contains(ControlID))
 	{
@@ -217,7 +205,7 @@ void UCHORSubsystem::GetRecorderStatus(const int32 ControlID, bool &bIsRecording
 	}
 }
 
-void UCHORSubsystem::GetPlayerStatus(const int32 ControlID
+void UCHORSubsystem::GetPlayerStatus(AActor *ControlID
                                              , FChorusCuePoint& Start
                                              , FChorusCuePoint& End
                                              , bool& bIsPlaying
