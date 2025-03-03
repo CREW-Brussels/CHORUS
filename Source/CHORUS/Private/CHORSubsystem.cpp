@@ -224,6 +224,41 @@ void UCHORSubsystem::GetPlayerStatus(AActor *ControlID
 	}
 }
 
+void UCHORSubsystem::SetPlayerLooping(AActor* controlID, bool loop)
+{
+	
+	if (ControlIds.Contains(controlID))
+	{
+		ControlIds[controlID].bLoop = loop;
+	}
+}
+
+void UCHORSubsystem::ResumePlayer(AActor* ControlID)
+{
+	
+	if (ControlIds.Contains(ControlID))
+	{
+		ControlIds[ControlID].bPlay = true;
+	}
+}
+
+void UCHORSubsystem::PausePlayer(AActor* ControlID)
+{
+	
+	if (ControlIds.Contains(ControlID))
+	{
+		ControlIds[ControlID].bPlay = false;
+	}
+}
+
+void UCHORSubsystem::SetPlayerSpeed(AActor* ControlID, float Speed)
+{
+	if (ControlIds.Contains(ControlID))
+	{
+		ControlIds[ControlID].Speed = Speed;
+	}
+}
+
 void UCHORSubsystem::DeleteTrack(const int Track)
 {
 	if (Tracks.Contains(Track))

@@ -104,7 +104,20 @@ public:
 	                     , UPARAM(DisplayName = "isLoop") bool& bIsLoop
 	                     , UPARAM(DisplayName = "Speed") float& Speed);
 	
-	 
+
+	UFUNCTION(BlueprintCallable, Category="Chorus")
+	void SetPlayerLooping(AActor* controlID, bool loop);
+	
+	UFUNCTION(BlueprintCallable, Category="Chorus")
+	void ResumePlayer(AActor *ControlID);
+	
+	UFUNCTION(BlueprintCallable, Category="Chorus")
+	void PausePlayer(AActor *ControlID);
+	
+	UFUNCTION(BlueprintCallable, Category="Chorus")
+	void SetPlayerSpeed(AActor *ControlID, float Speed);
+
+	
 	/**
 	 * Plays from a specific CuePoint for a given duration.
 	 * 
