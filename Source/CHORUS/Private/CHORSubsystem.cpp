@@ -138,6 +138,11 @@ void UCHORSubsystem::GetTrackStatus(const int Track, bool& IsRecording)
 	}
 }
 
+void UCHORSubsystem::TriggerEndOfTrackEvent(AActor* ControlId, const int& Track)
+{
+	OnEndOfTrack.Broadcast(this, ControlId, Track);
+}
+
 int32 UCHORSubsystem::GetNewControlId()
 {
 	return GetNextControlId();

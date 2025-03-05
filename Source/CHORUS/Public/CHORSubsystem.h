@@ -10,6 +10,9 @@
 
 #include "CHORSubsystem.generated.h"
 
+// Define the dynamic multicast delegate with parameters
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnEndOfTrackEvent, UCHORSubsystem*, Subsystem, AActor*, ControlID, int, Track);
+
 UCLASS()
 class CHORUS_API UCHORSubsystem : public UGameInstanceSubsystem//UEngineSubsystem
 {
@@ -36,6 +39,14 @@ public:
 
 	UPROPERTY()
 	TMap<int32, FChorusTrack> Tracks;
+
+	// Multicast delegate for the EndOfTrack event
+	UPROPERTY(BlueprintAssignable, Category = "Chorus")
+	FOnEndOfTrackEvent OnEndOfTrack;
+
+	// Method to trigger the EndOfTrack event
+	UFUNCTION(BlueprintCallable, Category = "Chorus")
+	void TriggerEndOfTrackEvent(AActor* ControlId, const int& Track);
 	
 	/**
     * Returns the next Unused ChorusControlId

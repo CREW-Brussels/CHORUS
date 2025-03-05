@@ -162,6 +162,7 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         }
         if (CurrentTime > true_end)
         {
+            ChorusSubSystem->TriggerEndOfTrackEvent(Owner, PlayHead.Track);
             if (ChorusSubSystem->ControlIds[Owner].bLoop)
             {
                 CurrentTime -= true_end - PlayHead.StartTime;
