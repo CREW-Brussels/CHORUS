@@ -269,14 +269,14 @@ void UCHORSubsystem::DeleteTrack(const int Track)
 
 void UCHORSubsystem::GetNewTrack(int &NewTrack)
 {
-	TArray<int> Tracks;
-	ListTracks(Tracks);
-	if (Tracks.Num() == 0)
+	TArray<int> OldTracks;
+	ListTracks(OldTracks);
+	if (OldTracks.Num() == 0)
 		NewTrack = 1;
 	else
 	{
-		Tracks.Sort();
-		NewTrack = Tracks.Last() + 1;
+		OldTracks.Sort();
+		NewTrack = OldTracks.Last() + 1;
 	}
 }
 
