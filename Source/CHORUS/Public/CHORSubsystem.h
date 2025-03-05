@@ -110,10 +110,10 @@ public:
 	
 	UFUNCTION(BlueprintCallable, Category="Chorus")
 	void ResumePlayer(AActor *ControlID);
-	
+
 	UFUNCTION(BlueprintCallable, Category="Chorus")
 	void PausePlayer(AActor *ControlID);
-	
+
 	UFUNCTION(BlueprintCallable, Category="Chorus")
 	void SetPlayerSpeed(AActor *ControlID, float Speed);
 
@@ -145,6 +145,9 @@ public:
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
 	void DeleteTrack(int Track);
+	
+	UFUNCTION(BlueprintCallable, Category="Chorus")
+	void GetNewTrack(int& NewTrack);
 
 	/**
 	 * Returns all existing tracks

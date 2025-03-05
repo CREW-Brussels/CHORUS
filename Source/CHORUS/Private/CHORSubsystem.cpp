@@ -20,7 +20,6 @@ void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
     Tracks[CuePoint.Track].CuePoints.Add(CuePoint);
 }
 
-
 FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const AActor *ControlId, const bool Recording, int32 Track)
 {
     FChorusCuePoint CuePoint;
@@ -34,7 +33,8 @@ FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const AActor *ControlId, const
         return CuePoint;
     }
 	
-
+	if (Track == 0)
+		GetNewTrack(Track);
 	if (Track != -1)
 		ControlIds[ControlId].Track = Track;
     CuePoint.Track = ControlIds[ControlId].Track;
@@ -168,7 +168,6 @@ void UCHORSubsystem::PlayFromCuePointForDuration(AActor *ControlID, FChorusCuePo
 	ControlPlayer(ControlID, Start, End, Speed, Loop, Play);
 }
 
-
 void UCHORSubsystem::ControlPlayer(AActor *ControlID
                                            , const FChorusCuePoint Start
                                            , const FChorusCuePoint End
@@ -265,6 +264,19 @@ void UCHORSubsystem::DeleteTrack(const int Track)
 	{
 		Tracks[Track].Frames.Empty();
 		Tracks[Track].CuePoints.Empty();
+	}
+}
+
+void UCHORSubsystem::GetNewTrack(int &NewTrack)
+{
+	TArray<int> Tracks;
+	ListTracks(Tracks);
+	if (Tracks.Num() == 0)
+		NewTrack = 1;
+	else
+	{
+		Tracks.Sort();
+		NewTrack = Tracks.Last() + 1;
 	}
 }
 
