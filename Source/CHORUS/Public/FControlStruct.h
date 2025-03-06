@@ -14,6 +14,9 @@ public :
 	FControlStruct();
 
 	UPROPERTY()
+	bool Dirty;
+	
+	UPROPERTY()
 	bool bIsRecording;
 
 	UPROPERTY()

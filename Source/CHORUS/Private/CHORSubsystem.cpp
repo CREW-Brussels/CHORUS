@@ -188,7 +188,11 @@ void UCHORSubsystem::ControlPlayer(AActor *ControlID
 		FControlStruct *ControlStruct = &ControlIds[ControlID];
 		ControlStruct->Speed = Speed;
 		ControlStruct->bLoop = Loop;
-		ControlStruct->Start = Start;
+		if (ControlStruct->Start != Start)
+		{
+			ControlStruct->Start = Start;
+			ControlStruct->Dirty = true;
+		}
 		ControlStruct->End = End;
 		if (Start.Track != 0 && End.Track!= 0)
 		{

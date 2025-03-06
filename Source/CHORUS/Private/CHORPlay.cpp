@@ -55,6 +55,12 @@ void FCHORPlay::Evaluate_AnyThread(FPoseContext& Output)
         Base.Evaluate(Output);
         return;
     }
+
+    if (ChorusSubSystem->ControlIds[Owner].Dirty)
+    {
+        ChorusSubSystem->ControlIds[Owner].Dirty = false;
+        InitializePlayHead();
+    }
     
     if (  !( ChorusSubSystem->ControlIds[Owner].bPlay && ReplayRecording(Output) )  )
     {
