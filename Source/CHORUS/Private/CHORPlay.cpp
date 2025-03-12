@@ -145,6 +145,8 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
 {
     if (ChorusSubSystem == nullptr)
         return false;
+    if (ChorusSubSystem->ControlIds[Owner].bPlay == false)
+        return false;
     
     if (PlayHead.Track == 0)
     {
@@ -164,19 +166,32 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         
         if (CurrentTime < t)
         {
-            CurrentTime += true_end - PlayHead.StartTime;
-        }
-        if (CurrentTime > true_end)
-        {
-            ChorusSubSystem->TriggerEndOfTrackEvent(Owner, PlayHead.Track);
             if (ChorusSubSystem->ControlIds[Owner].bLoop)
             {
-                CurrentTime -= true_end - PlayHead.StartTime;
+                CurrentTime += true_end - PlayHead.StartTime;
+                ChorusSubSystem->TriggerOnLoopEvent(Owner, PlayHead.Track, false);
             }
             else
             {
+                CurrentTime = t;
                 ChorusSubSystem->ControlIds[Owner].bPlay = false;
-                return false;
+                ChorusSubSystem->TriggerStartOfTrackEvent(Owner, PlayHead.Track);
+                //return false;
+            }
+        }
+        if (CurrentTime > true_end)
+        {
+            if (ChorusSubSystem->ControlIds[Owner].bLoop)
+            {
+                CurrentTime -= true_end - PlayHead.StartTime;
+                ChorusSubSystem->TriggerOnLoopEvent(Owner, PlayHead.Track, true);
+            }
+            else
+            {
+                CurrentTime = true_end - DBL_EPSILON;
+                ChorusSubSystem->ControlIds[Owner].bPlay = false;
+                ChorusSubSystem->TriggerEndOfTrackEvent(Owner, PlayHead.Track);
+                //return false;
             }
         }
 

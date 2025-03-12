@@ -1,8 +1,9 @@
-// // Fill out your copyright notice in the Description page of Project Settings.
+// Fill out your copyright notice in the Description page of Project Settings.
 
 #pragma once
 
 #include "CoreMinimal.h"
+//#include "CHORPlay.h"
 #include "Subsystems/EngineSubsystem.h"
 #include "FChorusCuePoint.h"
 #include "FControlStruct.h"
@@ -12,6 +13,8 @@
 
 // Define the dynamic multicast delegate with parameters
 DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnEndOfTrackEvent, UCHORSubsystem*, Subsystem, AActor*, ControlID, int, Track);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStartOfTrackEvent, UCHORSubsystem*, Subsystem, AActor*, ControlID, int, Track);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnLoopEvent, UCHORSubsystem*, Subsystem, AActor*, ControlID, int, Track, bool, Forward);
 
 UCLASS()
 class CHORUS_API UCHORSubsystem : public UGameInstanceSubsystem//UEngineSubsystem
@@ -33,6 +36,8 @@ public:
 	void UnregisterRecorder(AActor* ControlId);
 	void RegisterCuePoint(FChorusCuePoint& CuePoint);
 	FChorusCuePoint PlayPauseRecorder(const AActor* ControlId, bool Recording, int32 Track = -1);
+	void TriggerStartOfTrackEvent(AActor* ControlId, const int& Track);
+	void TriggerOnLoopEvent(AActor* Actor, int32 INT32, bool bCond);
 
 	UPROPERTY()
 	TMap<AActor*, FControlStruct> ControlIds;
@@ -43,6 +48,10 @@ public:
 	// Multicast delegate for the EndOfTrack event
 	UPROPERTY(BlueprintAssignable, Category = "Chorus")
 	FOnEndOfTrackEvent OnEndOfTrack;
+	UPROPERTY(BlueprintAssignable, Category = "Chorus")
+	FOnStartOfTrackEvent OnStartOfTrack;
+	UPROPERTY(BlueprintAssignable, Category = "Chorus")
+	FOnLoopEvent OnLoop;
 
 	// Method to trigger the EndOfTrack event
 	UFUNCTION(BlueprintCallable, Category = "Chorus")

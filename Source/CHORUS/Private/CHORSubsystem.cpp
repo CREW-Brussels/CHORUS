@@ -138,6 +138,22 @@ void UCHORSubsystem::GetTrackStatus(const int Track, bool& IsRecording)
 	}
 }
 
+void UCHORSubsystem::TriggerStartOfTrackEvent(AActor* ControlId, const int& Track)
+{
+	AsyncTask(ENamedThreads::GameThread, [this, ControlId, Track]()
+	{
+		OnStartOfTrack.Broadcast(this, ControlId, Track);
+	});
+}
+
+void UCHORSubsystem::TriggerOnLoopEvent(AActor* ControlId, int Track, bool Forward)
+{
+	AsyncTask(ENamedThreads::GameThread, [this, ControlId, Track, Forward]()
+{
+	OnLoop.Broadcast(this, ControlId, Track, Forward);
+});
+}
+
 void UCHORSubsystem::TriggerEndOfTrackEvent(AActor* ControlId, const int& Track)
 {
 	AsyncTask(ENamedThreads::GameThread, [this, ControlId, Track]()
