@@ -87,14 +87,15 @@ public:
 	 * @param End CuePoint marking the end of the clip
 	 * @param Speed The play speed
 	 * @param Loop if true the clip will loop
+	 * @param Play
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
 	void ControlPlayer(AActor* Owner
 	                   , FChorusCuePoint Start
 	                   , FChorusCuePoint End
-	                   , float Speed
-	                   , bool Loop
-	                   , bool Play);
+	                   , float Speed = 1.0f
+	                   , bool Loop = false
+	                   , bool Play = true);
 
 	/**
 	 * 
@@ -126,7 +127,7 @@ public:
 	
 
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void SetPlayerLooping(AActor* Owner, bool loop);
+	void SetPlayerLooping(AActor* Owner, bool loop = true);
 	
 	UFUNCTION(BlueprintCallable, Category="Chorus")
 	void ResumePlayer(AActor *Owner);
@@ -149,7 +150,7 @@ public:
 	 * @param Play if true, starts playing, otherwise pauses
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Chorus")
-	void PlayFromCuePointForDuration(AActor* Owner, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play);
+	void PlayFromCuePointForDuration(AActor* Owner, FChorusCuePoint Start, float Duration, float Speed = 1.0f, bool Loop = false, bool Play = true);
 	
 	/**
 	 * Determine if a Track is currently recording
@@ -227,7 +228,6 @@ public:
 	void GetClipLength(const FChorusCuePoint Start, const FChorusCuePoint End, UPARAM(DisplayName = "Length") float &Length);
 
 private:
-	
 	bool UnregisterOwner(AActor* Owner);
 	UPROPERTY()
     int32 NextOwner;

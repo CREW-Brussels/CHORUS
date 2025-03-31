@@ -29,13 +29,13 @@ public :
 	FChorusCuePoint End;
 
 	UPROPERTY()
-	float Speed;
+	float Speed = 1.0f;
 
 	UPROPERTY()
 	bool bLoop;
 
 	UPROPERTY()
-	bool bPlay;
+	bool bPlay = true;
 
 	UPROPERTY()
 	float Position;
