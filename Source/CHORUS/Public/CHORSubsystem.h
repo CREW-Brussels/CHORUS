@@ -12,9 +12,9 @@
 #include "CHORSubsystem.generated.h"
 
 // Define the dynamic multicast delegate with parameters
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnEndOfTrackEvent, UCHORSubsystem*, Subsystem, AActor*, ControlID, int, Track);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStartOfTrackEvent, UCHORSubsystem*, Subsystem, AActor*, ControlID, int, Track);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnLoopEvent, UCHORSubsystem*, Subsystem, AActor*, ControlID, int, Track, bool, Forward);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnEndOfTrackEvent, UCHORSubsystem*, Subsystem, AActor*, Owner, int, Track);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStartOfTrackEvent, UCHORSubsystem*, Subsystem, AActor*, Owner, int, Track);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnLoopEvent, UCHORSubsystem*, Subsystem, AActor*, Owner, int, Track, bool, Forward);
 
 UCLASS()
 class CHORUS_API UCHORSubsystem : public UGameInstanceSubsystem//UEngineSubsystem
@@ -27,20 +27,20 @@ public:
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;
 
-	void RegisterPlayer(AActor* ControlId);
-	void RegisterControlId(AActor* ControlId, const FControlStruct& NewControl);
-	void RegisterRecorder(AActor* ControlId);
-	int32 GetNextControlId();
-	void UnregisterPlayer(AActor* ControlId);
+	void RegisterPlayer(AActor* Owner);
+	void RegisterOwner(AActor* Owner, const FControlStruct& NewControl);
+	void RegisterRecorder(AActor* Owner);
+	int32 GetNextOwner();
+	void UnregisterPlayer(AActor* Owner);
 	void RecordFrame(int32 Track, const FChorusFrame &frame);
-	void UnregisterRecorder(AActor* ControlId);
+	void UnregisterRecorder(AActor* Owner);
 	void RegisterCuePoint(FChorusCuePoint& CuePoint);
-	FChorusCuePoint PlayPauseRecorder(const AActor* ControlId, bool Recording, int32 Track = -1);
-	void TriggerStartOfTrackEvent(AActor* ControlId, const int& Track);
+	FChorusCuePoint PlayPauseRecorder(const AActor* Owner, bool Recording, int32 Track = -1);
+	void TriggerStartOfTrackEvent(AActor* Owner, const int& Track);
 	void TriggerOnLoopEvent(AActor* Actor, int32 INT32, bool bCond);
 
 	UPROPERTY()
-	TMap<AActor*, FControlStruct> ControlIds;
+	TMap<AActor*, FControlStruct> Owners;
 
 	UPROPERTY()
 	TMap<int32, FChorusTrack> Tracks;
@@ -55,41 +55,41 @@ public:
 
 	// Method to trigger the EndOfTrack event
 	UFUNCTION(BlueprintCallable, Category = "Chorus")
-	void TriggerEndOfTrackEvent(AActor* ControlId, const int& Track);
+	void TriggerEndOfTrackEvent(AActor* Owner, const int& Track);
 	
 	/**
-    * Returns the next Unused ChorusControlId
+    * Returns the next Unused ChorusOwner
     * It will always return one over the highest existing ID even if it is not used anymore.
     */
 	UFUNCTION(BlueprintPure, Category = "Chorus")
-	int32 GetNewControlId();
+	int32 GetNewOwner();
 	
 	/**
-	* Start or stop the recording on the ChorusRecorder animation node with a specific ControlId
+	* Start or stop the recording on the ChorusRecorder animation node with a specific Owner
 	* Return a CuePoint
-	* @Param ControlID the ChorusControlId that refers to this specific ChorusRecorder
+	* @Param Owner the ChorusOwner that refers to this specific ChorusRecorder
 	* @Param a CuePoint to this event
     */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void ControlRecorder(AActor* ControlID
+	void ControlRecorder(AActor* Owner
 	                     , bool Record
 	                     , UPARAM(DisplayName = "Cue Point") FChorusCuePoint& CuePoint);
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void StartRecording(AActor* ControlID, int32 Track, FChorusCuePoint& CuePoint);
+	void StartRecording(AActor* Owner, int32 Track, FChorusCuePoint& CuePoint);
 
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void StopRecording(AActor* ControlID, FChorusCuePoint& CuePoint);
+	void StopRecording(AActor* Owner, FChorusCuePoint& CuePoint);
 
 	/**
-	 * Control the parameters of the ChorusPlayer animation node with a specific ControlID
-	 * @param ControlID the ChorusControlId that refers to this specific ChorusPlayer
+	 * Control the parameters of the ChorusPlayer animation node with a specific Owner
+	 * @param Owner the ChorusOwner that refers to this specific ChorusPlayer
 	 * @param Start CuePoint marking the beginning of the clip
 	 * @param End CuePoint marking the end of the clip
 	 * @param Speed The play speed
 	 * @param Loop if true the clip will loop
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void ControlPlayer(AActor* ControlID
+	void ControlPlayer(AActor* Owner
 	                   , FChorusCuePoint Start
 	                   , FChorusCuePoint End
 	                   , float Speed
@@ -98,18 +98,18 @@ public:
 
 	/**
 	 * 
-	 * @param ControlID 
+	 * @param Owner
 	 * @param bIsRecording 
 	 * @param Track 
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void GetRecorderStatus(AActor* ControlID
+	void GetRecorderStatus(AActor* Owner
 	                       , UPARAM(DisplayName = "Is Recording") bool& bIsRecording
 	                       , UPARAM(DisplayName = "Track") int32& Track);
 
 	/**
 	 * 
-	 * @param ControlID 
+	 * @param Owner
 	 * @param Start 
 	 * @param End 
 	 * @param bIsPlaying 
@@ -117,7 +117,7 @@ public:
 	 * @param Speed 
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void GetPlayerStatus(AActor* ControlID
+	void GetPlayerStatus(AActor* Owner
 	                     , UPARAM(DisplayName = "Start") FChorusCuePoint& Start
 	                     , UPARAM(DisplayName = "End") FChorusCuePoint& End
 	                     , UPARAM(DisplayName = "Is Playing") bool& bIsPlaying
@@ -126,22 +126,22 @@ public:
 	
 
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void SetPlayerLooping(AActor* controlID, bool loop);
+	void SetPlayerLooping(AActor* Owner, bool loop);
 	
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void ResumePlayer(AActor *ControlID);
+	void ResumePlayer(AActor *Owner);
 
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void PausePlayer(AActor *ControlID);
+	void PausePlayer(AActor *Owner);
 
 	UFUNCTION(BlueprintCallable, Category="Chorus")
-	void SetPlayerSpeed(AActor *ControlID, float Speed);
+	void SetPlayerSpeed(AActor *Owner, float Speed);
 
 	
 	/**
 	 * Plays from a specific CuePoint for a given duration.
 	 * 
-	 * @param ControlID the ChorusControlId that refers to this specific ChorusPlayer
+	 * @param Owner the Owner that refers to this specific ChorusPlayer
 	 * @param Start CuePoint marking the beginning of the play
 	 * @param Duration Duration to play for in seconds
 	 * @param Speed The play speed
@@ -149,7 +149,7 @@ public:
 	 * @param Play if true, starts playing, otherwise pauses
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Chorus")
-	void PlayFromCuePointForDuration(AActor* ControlID, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play);
+	void PlayFromCuePointForDuration(AActor* Owner, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play);
 	
 	/**
 	 * Determine if a Track is currently recording
@@ -228,8 +228,8 @@ public:
 
 private:
 	
-	bool UnregisterControlId(AActor* ControlId);
+	bool UnregisterOwner(AActor* Owner);
 	UPROPERTY()
-    int32 NextControlId;
+    int32 NextOwner;
 };
 

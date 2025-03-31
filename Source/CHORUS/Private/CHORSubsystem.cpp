@@ -6,9 +6,9 @@
 
 #include "Kismet/GameplayStatics.h"
 
-int UCHORSubsystem::GetNextControlId()
+int UCHORSubsystem::GetNextOwner()
 {
-    return ++NextControlId;
+    return ++NextOwner;
 }
 
 void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
@@ -20,13 +20,13 @@ void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
     Tracks[CuePoint.Track].CuePoints.Add(CuePoint);
 }
 
-FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const AActor *ControlId, const bool Recording, int32 Track)
+FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const AActor *Owner, const bool Recording, int32 Track)
 {
     FChorusCuePoint CuePoint;
 
-    if (!ControlIds.Contains(ControlId))
+    if (!Owners.Contains(Owner))
     {
-        UE_LOG(LogTemp, Warning, TEXT("ControlID is not valid"))
+        UE_LOG(LogTemp, Warning, TEXT("Owner is not valid"))
         CuePoint.Track = 0;
         CuePoint.Index = 0;
         //CuePoint.Timestamp = 0;
@@ -36,61 +36,61 @@ FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const AActor *ControlId, const
 	if (Track == 0)
 		GetNewTrack(Track);
 	if (Track != -1)
-		ControlIds[ControlId].Track = Track;
-    CuePoint.Track = ControlIds[ControlId].Track;
-    ControlIds[ControlId].bIsRecording = Recording;
+		Owners[Owner].Track = Track;
+    CuePoint.Track = Owners[Owner].Track;
+    Owners[Owner].bIsRecording = Recording;
 	
     RegisterCuePoint(CuePoint);
     return CuePoint;
 }
 
-void UCHORSubsystem::RegisterControlId(AActor* ControlId, const FControlStruct &NewControl)
+void UCHORSubsystem::RegisterOwner(AActor* Owner, const FControlStruct &NewControl)
 {
-    if (ControlIds.Contains(ControlId))
+    if (Owners.Contains(Owner))
     {
-        UE_LOG(LogTemp, Error, TEXT("ControlId not available."));
+        UE_LOG(LogTemp, Error, TEXT("Owner not available."));
         return;
     }
     
-    ControlIds.Add(ControlId, NewControl);
+    Owners.Add(Owner, NewControl);
     
     return;
 }
 
-void UCHORSubsystem::RegisterPlayer(AActor *ControlId)
+void UCHORSubsystem::RegisterPlayer(AActor *Owner)
 {
     FControlStruct NewControl;
 
-    RegisterControlId(ControlId, NewControl);
+    RegisterOwner(Owner, NewControl);
 }
 
-void UCHORSubsystem::UnregisterPlayer(AActor *ControlId)
+void UCHORSubsystem::UnregisterPlayer(AActor *Owner)
 {
-    if (!UnregisterControlId(ControlId))
-        UE_LOG(LogTemp, Warning, TEXT("UnregisterPlayerr(): ControlId not found ?!"))
+    if (!UnregisterOwner(Owner))
+        UE_LOG(LogTemp, Warning, TEXT("UnregisterPlayerr(): Owner not found ?!"))
 }
 
-bool UCHORSubsystem::UnregisterControlId(AActor *ControlId)
+bool UCHORSubsystem::UnregisterOwner(AActor *Owner)
 {
-    if (!ControlIds.IsEmpty() && ControlIds.Contains(ControlId))
+    if (!Owners.IsEmpty() && Owners.Contains(Owner))
     {
-        ControlIds.Remove(ControlId);
+        Owners.Remove(Owner);
         return true;
     }
     return false;
 }
 
-void UCHORSubsystem::UnregisterRecorder(AActor *ControlId)
+void UCHORSubsystem::UnregisterRecorder(AActor *Owner)
 {
-    if (!UnregisterControlId(ControlId))
-        UE_LOG(LogTemp, Warning, TEXT("UnregisterRecorder(): ControlId not found ?!"))
+    if (!UnregisterOwner(Owner))
+        UE_LOG(LogTemp, Warning, TEXT("UnregisterRecorder(): Owner not found ?!"))
 }
 
-void UCHORSubsystem::RegisterRecorder(AActor* ControlId)
+void UCHORSubsystem::RegisterRecorder(AActor* Owner)
 {
     FControlStruct NewControl;
 	
-    RegisterControlId(ControlId, NewControl);
+    RegisterOwner(Owner, NewControl);
 }
 
 void UCHORSubsystem::RecordFrame(int32 Track, const FChorusFrame& frame)
@@ -101,12 +101,12 @@ void UCHORSubsystem::RecordFrame(int32 Track, const FChorusFrame& frame)
 
 UCHORSubsystem::UCHORSubsystem()
 {
-    NextControlId = 0;
+    NextOwner = 0;
 }
 
 void UCHORSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
-    NextControlId = 0;
+    NextOwner = 0;
     
 	Super::Initialize(Collection);
 }
@@ -127,81 +127,81 @@ void UCHORSubsystem::GetTrackStatus(const int Track, bool& IsRecording)
 	}
 	
 	TArray<AActor*> ControlKeys;
-	ControlIds.GetKeys(ControlKeys);
+	Owners.GetKeys(ControlKeys);
 	for (int i = 0; i < ControlKeys.Num(); i++)
 	{
-		if (ControlIds[ControlKeys[i]].Track == Track)
+		if (Owners[ControlKeys[i]].Track == Track)
 		{
-			IsRecording = ControlIds[ControlKeys[i]].bIsRecording;
+			IsRecording = Owners[ControlKeys[i]].bIsRecording;
 			return;
 		}
 	}
 }
 
-void UCHORSubsystem::TriggerStartOfTrackEvent(AActor* ControlId, const int& Track)
+void UCHORSubsystem::TriggerStartOfTrackEvent(AActor* Owner, const int& Track)
 {
-	AsyncTask(ENamedThreads::GameThread, [this, ControlId, Track]()
+	AsyncTask(ENamedThreads::GameThread, [this, Owner, Track]()
 	{
-		OnStartOfTrack.Broadcast(this, ControlId, Track);
+		OnStartOfTrack.Broadcast(this, Owner, Track);
 	});
 }
 
-void UCHORSubsystem::TriggerOnLoopEvent(AActor* ControlId, int Track, bool Forward)
+void UCHORSubsystem::TriggerOnLoopEvent(AActor* Owner, int Track, bool Forward)
 {
-	AsyncTask(ENamedThreads::GameThread, [this, ControlId, Track, Forward]()
+	AsyncTask(ENamedThreads::GameThread, [this, Owner, Track, Forward]()
 {
-	OnLoop.Broadcast(this, ControlId, Track, Forward);
+	OnLoop.Broadcast(this, Owner, Track, Forward);
 });
 }
 
-void UCHORSubsystem::TriggerEndOfTrackEvent(AActor* ControlId, const int& Track)
+void UCHORSubsystem::TriggerEndOfTrackEvent(AActor* Owner, const int& Track)
 {
-	AsyncTask(ENamedThreads::GameThread, [this, ControlId, Track]()
+	AsyncTask(ENamedThreads::GameThread, [this, Owner, Track]()
 	{
-		OnEndOfTrack.Broadcast(this, ControlId, Track);
+		OnEndOfTrack.Broadcast(this, Owner, Track);
 	});
 }
 
-int32 UCHORSubsystem::GetNewControlId()
+int32 UCHORSubsystem::GetNewOwner()
 {
-	return GetNextControlId();
+	return GetNextOwner();
 }
 
-void UCHORSubsystem::ControlRecorder(AActor *ControlID, const bool Record, FChorusCuePoint &CuePoint)
+void UCHORSubsystem::ControlRecorder(AActor *Owner, const bool Record, FChorusCuePoint &CuePoint)
 {
-    CuePoint = PlayPauseRecorder(ControlID, Record, -1);
+    CuePoint = PlayPauseRecorder(Owner, Record, -1);
 }
 
-void UCHORSubsystem::StartRecording(AActor *ControlID, int32 Track, FChorusCuePoint &CuePoint)
+void UCHORSubsystem::StartRecording(AActor *Owner, int32 Track, FChorusCuePoint &CuePoint)
 {
-	CuePoint = PlayPauseRecorder(ControlID, true, Track);
+	CuePoint = PlayPauseRecorder(Owner, true, Track);
 }
 
-void UCHORSubsystem::StopRecording(AActor *ControlID, FChorusCuePoint &CuePoint)
+void UCHORSubsystem::StopRecording(AActor *Owner, FChorusCuePoint &CuePoint)
 {
-	CuePoint = PlayPauseRecorder(ControlID, false, -1);
+	CuePoint = PlayPauseRecorder(Owner, false, -1);
 }
 
-void UCHORSubsystem::PlayFromCuePointForDuration(AActor *ControlID, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play)
+void UCHORSubsystem::PlayFromCuePointForDuration(AActor *Owner, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play)
 {
 	FChorusCuePoint End;
 	End.SetTimestamp(Start.Timestamp(this) + Duration);
 	End.Track = Start.Track;
 	End.Index = -1;
 	
-	ControlPlayer(ControlID, Start, End, Speed, Loop, Play);
+	ControlPlayer(Owner, Start, End, Speed, Loop, Play);
 }
 
-void UCHORSubsystem::ControlPlayer(AActor *ControlID
+void UCHORSubsystem::ControlPlayer(AActor *Owner
                                            , const FChorusCuePoint Start
                                            , const FChorusCuePoint End
                                            , const float Speed
                                            , const bool Loop
                                            , const bool Play)
 {
-	if (ControlIds.Contains(ControlID))
+	if (Owners.Contains(Owner))
 	{
-		FControlStruct *ControlStruct = &ControlIds[ControlID];
+		FControlStruct *ControlStruct = &Owners[Owner];
 		ControlStruct->Speed = Speed;
 		ControlStruct->bLoop = Loop;
 		if (ControlStruct->Start != Start)
@@ -222,26 +222,26 @@ void UCHORSubsystem::ControlPlayer(AActor *ControlID
 	}
 }
 
-void UCHORSubsystem::GetRecorderStatus(AActor *ControlID, bool &bIsRecording, int32 &Track)
+void UCHORSubsystem::GetRecorderStatus(AActor *Owner, bool &bIsRecording, int32 &Track)
 {
-	if (ControlIds.Contains(ControlID))
+	if (Owners.Contains(Owner))
 	{
-		FControlStruct ControlStruct = ControlIds[ControlID];
+		FControlStruct ControlStruct = Owners[Owner];
 		bIsRecording = ControlStruct.bIsRecording;
 		Track = ControlStruct.Track;
 	}
 }
 
-void UCHORSubsystem::GetPlayerStatus(AActor *ControlID
+void UCHORSubsystem::GetPlayerStatus(AActor *Owner
                                              , FChorusCuePoint& Start
                                              , FChorusCuePoint& End
                                              , bool& bIsPlaying
                                              , bool& bIsLoop
                                              , float& Speed)
 {
-	if (ControlIds.Contains(ControlID))
+	if (Owners.Contains(Owner))
 	{
-		FControlStruct ControlStruct = ControlIds[ControlID];
+		FControlStruct ControlStruct = Owners[Owner];
 
 		Start = ControlStruct.Start;
 		End = ControlStruct.End;
@@ -251,38 +251,38 @@ void UCHORSubsystem::GetPlayerStatus(AActor *ControlID
 	}
 }
 
-void UCHORSubsystem::SetPlayerLooping(AActor* controlID, bool loop)
+void UCHORSubsystem::SetPlayerLooping(AActor* Owner, bool loop)
 {
 	
-	if (ControlIds.Contains(controlID))
+	if (Owners.Contains(Owner))
 	{
-		ControlIds[controlID].bLoop = loop;
+		Owners[Owner].bLoop = loop;
 	}
 }
 
-void UCHORSubsystem::ResumePlayer(AActor* ControlID)
+void UCHORSubsystem::ResumePlayer(AActor* Owner)
 {
 	
-	if (ControlIds.Contains(ControlID))
+	if (Owners.Contains(Owner))
 	{
-		ControlIds[ControlID].bPlay = true;
+		Owners[Owner].bPlay = true;
 	}
 }
 
-void UCHORSubsystem::PausePlayer(AActor* ControlID)
+void UCHORSubsystem::PausePlayer(AActor* Owner)
 {
 	
-	if (ControlIds.Contains(ControlID))
+	if (Owners.Contains(Owner))
 	{
-		ControlIds[ControlID].bPlay = false;
+		Owners[Owner].bPlay = false;
 	}
 }
 
-void UCHORSubsystem::SetPlayerSpeed(AActor* ControlID, float Speed)
+void UCHORSubsystem::SetPlayerSpeed(AActor* Owner, float Speed)
 {
-	if (ControlIds.Contains(ControlID))
+	if (Owners.Contains(Owner))
 	{
-		ControlIds[ControlID].Speed = Speed;
+		Owners[Owner].Speed = Speed;
 	}
 }
 

@@ -56,13 +56,13 @@ void FCHORPlay::Evaluate_AnyThread(FPoseContext& Output)
         return;
     }
 
-    if (ChorusSubSystem->ControlIds[Owner].Dirty)
+    if (ChorusSubSystem->Owners[Owner].Dirty)
     {
-        ChorusSubSystem->ControlIds[Owner].Dirty = false;
+        ChorusSubSystem->Owners[Owner].Dirty = false;
         InitializePlayHead();
     }
     
-    if (  !( ChorusSubSystem->ControlIds[Owner].bPlay && ReplayRecording(Output) )  )
+    if (  !( ChorusSubSystem->Owners[Owner].bPlay && ReplayRecording(Output) )  )
     {
         Base.Evaluate(Output);
     }
@@ -80,13 +80,13 @@ void FCHORPlay::InitializePlayHead()
     if (ChorusSubSystem == nullptr)
         return;
     
-    FControlStruct ControlStruct = ChorusSubSystem->ControlIds[Owner];
+    FControlStruct ControlStruct = ChorusSubSystem->Owners[Owner];
     ControlStruct.Speed = ControlStruct.Speed != 0 ? ControlStruct.Speed : 1;
     
     if (ControlStruct.Start.Track != ControlStruct.End.Track ||
         !ChorusSubSystem->Tracks.Contains(ControlStruct.Start.Track))
     {
-        ChorusSubSystem->ControlIds[Owner].bPlay = false;
+        ChorusSubSystem->Owners[Owner].bPlay = false;
         PlayHead.Track = 0;
         return;
     }
@@ -145,7 +145,7 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
 {
     if (ChorusSubSystem == nullptr)
         return false;
-    if (ChorusSubSystem->ControlIds[Owner].bPlay == false)
+    if (ChorusSubSystem->Owners[Owner].bPlay == false)
         return false;
     
     if (PlayHead.Track == 0)
@@ -153,7 +153,7 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         InitializePlayHead();
     }
     
-    CurrentTime += DeltaTime * ChorusSubSystem->ControlIds[Owner].Speed;
+    CurrentTime += DeltaTime * ChorusSubSystem->Owners[Owner].Speed;
     const TArray<FChorusFrame>& frames = ChorusSubSystem->Tracks[PlayHead.Track].Frames;
     
     if (frames.Num() - 2 >= 0)
@@ -166,7 +166,7 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         
         if (CurrentTime < t)
         {
-            if (ChorusSubSystem->ControlIds[Owner].bLoop)
+            if (ChorusSubSystem->Owners[Owner].bLoop)
             {
                 CurrentTime += true_end - PlayHead.StartTime;
                 ChorusSubSystem->TriggerOnLoopEvent(Owner, PlayHead.Track, false);
@@ -174,14 +174,14 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
             else
             {
                 CurrentTime = t;
-                ChorusSubSystem->ControlIds[Owner].bPlay = false;
+                ChorusSubSystem->Owners[Owner].bPlay = false;
                 ChorusSubSystem->TriggerStartOfTrackEvent(Owner, PlayHead.Track);
                 //return false;
             }
         }
         if (CurrentTime > true_end)
         {
-            if (ChorusSubSystem->ControlIds[Owner].bLoop)
+            if (ChorusSubSystem->Owners[Owner].bLoop)
             {
                 CurrentTime -= true_end - PlayHead.StartTime;
                 ChorusSubSystem->TriggerOnLoopEvent(Owner, PlayHead.Track, true);
@@ -189,7 +189,7 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
             else
             {
                 CurrentTime = true_end - DBL_EPSILON;
-                ChorusSubSystem->ControlIds[Owner].bPlay = false;
+                ChorusSubSystem->Owners[Owner].bPlay = false;
                 ChorusSubSystem->TriggerEndOfTrackEvent(Owner, PlayHead.Track);
                 //return false;
             }

@@ -62,9 +62,9 @@ void FCHORRec::Evaluate_AnyThread(FPoseContext& Output)
 
     RemainderTime += DeltaTime;
     CurrentTime += DeltaTime;
-    if (ChorusSubSystem->ControlIds[Owner].bIsRecording && RemainderTime >= FrameDelta)
+    if (ChorusSubSystem->Owners[Owner].bIsRecording && RemainderTime >= FrameDelta)
     {
-        FrameDelta = 1.0 / (double)ChorusSubSystem->Tracks[ChorusSubSystem->ControlIds[Owner].Track].Fps;
+        FrameDelta = 1.0 / (double)ChorusSubSystem->Tracks[ChorusSubSystem->Owners[Owner].Track].Fps;
         FChorusFrame frame;
         frame.pose = Output.Pose.GetBones();
         frame.time = CurrentTime;
@@ -72,7 +72,7 @@ void FCHORRec::Evaluate_AnyThread(FPoseContext& Output)
         
         RemainderTime = FMath::Fmod(RemainderTime, FrameDelta);
 
-        ChorusSubSystem->RecordFrame(ChorusSubSystem->ControlIds[Owner].Track, frame);
+        ChorusSubSystem->RecordFrame(ChorusSubSystem->Owners[Owner].Track, frame);
     }
 }
 
