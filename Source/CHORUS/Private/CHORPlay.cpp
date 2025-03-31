@@ -25,7 +25,7 @@ void FCHORPlay::Initialize_AnyThread(const FAnimationInitializeContext& Context)
             Owner = AnimInstance->GetOwningComponent()->GetOwner();
             if (Owner && IsValid(Owner->GetGameInstance()))
             {
-                ChorusSubSystem = Owner->GetGameInstance()->GetSubsystem<UCHORSubsystem>();
+                ChorusSubSystem = Owner->GetGameInstance()->GetSubsystem<UCHORUSSubsystem>();
             }
             else
             {

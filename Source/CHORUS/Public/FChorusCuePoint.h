@@ -36,7 +36,7 @@ struct FChorusCuePoint
     int Index;
 
     //UFUNCTION(BlueprintCallable)
-    double const Timestamp(class UCHORSubsystem* Subsystem);
+    double const Timestamp(class UCHORUSSubsystem* Subsystem);
 
 private:
 	double _TimeStamp;

@@ -12,17 +12,17 @@
 #include "CHORSubsystem.generated.h"
 
 // Define the dynamic multicast delegate with parameters
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnEndOfTrackEvent, UCHORSubsystem*, Subsystem, AActor*, Owner, int, Track);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStartOfTrackEvent, UCHORSubsystem*, Subsystem, AActor*, Owner, int, Track);
-DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnLoopEvent, UCHORSubsystem*, Subsystem, AActor*, Owner, int, Track, bool, Forward);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnEndOfTrackEvent, UCHORUSSubsystem*, Subsystem, AActor*, Owner, int, Track);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_ThreeParams(FOnStartOfTrackEvent, UCHORUSSubsystem*, Subsystem, AActor*, Owner, int, Track);
+DECLARE_DYNAMIC_MULTICAST_DELEGATE_FourParams(FOnLoopEvent, UCHORUSSubsystem*, Subsystem, AActor*, Owner, int, Track, bool, Forward);
 
 UCLASS()
-class CHORUS_API UCHORSubsystem : public UGameInstanceSubsystem//UEngineSubsystem
+class CHORUS_API UCHORUSSubsystem : public UGameInstanceSubsystem//UEngineSubsystem
 {
 	GENERATED_BODY()
 
 public:
-	UCHORSubsystem();
+	UCHORUSSubsystem();
 	
 	virtual void Initialize(FSubsystemCollectionBase& Collection) override;
 	virtual void Deinitialize() override;

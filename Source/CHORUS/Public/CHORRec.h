@@ -36,7 +36,7 @@ private:
 	AActor* Owner;
 	
 	UPROPERTY()
-    UCHORSubsystem* ChorusSubSystem;
+    UCHORUSSubsystem* ChorusSubSystem;
 
 	double CurrentTime;
 	double DeltaTime;

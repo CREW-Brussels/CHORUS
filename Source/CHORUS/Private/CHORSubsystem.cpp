@@ -6,12 +6,12 @@
 
 #include "Kismet/GameplayStatics.h"
 
-int UCHORSubsystem::GetNextOwner()
+int UCHORUSSubsystem::GetNextOwner()
 {
     return ++NextOwner;
 }
 
-void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
+void UCHORUSSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
 {
     if (!Tracks.Contains(CuePoint.Track))
         Tracks.Add(CuePoint.Track);
@@ -20,7 +20,7 @@ void UCHORSubsystem::RegisterCuePoint(FChorusCuePoint &CuePoint)
     Tracks[CuePoint.Track].CuePoints.Add(CuePoint);
 }
 
-FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const AActor *Owner, const bool Recording, int32 Track)
+FChorusCuePoint UCHORUSSubsystem::PlayPauseRecorder(const AActor *Owner, const bool Recording, int32 Track)
 {
     FChorusCuePoint CuePoint;
 
@@ -44,7 +44,7 @@ FChorusCuePoint UCHORSubsystem::PlayPauseRecorder(const AActor *Owner, const boo
     return CuePoint;
 }
 
-void UCHORSubsystem::RegisterOwner(AActor* Owner, const FControlStruct &NewControl)
+void UCHORUSSubsystem::RegisterOwner(AActor* Owner, const FControlStruct &NewControl)
 {
     if (Owners.Contains(Owner))
     {
@@ -57,20 +57,20 @@ void UCHORSubsystem::RegisterOwner(AActor* Owner, const FControlStruct &NewContr
     return;
 }
 
-void UCHORSubsystem::RegisterPlayer(AActor *Owner)
+void UCHORUSSubsystem::RegisterPlayer(AActor *Owner)
 {
     FControlStruct NewControl;
 
     RegisterOwner(Owner, NewControl);
 }
 
-void UCHORSubsystem::UnregisterPlayer(AActor *Owner)
+void UCHORUSSubsystem::UnregisterPlayer(AActor *Owner)
 {
     if (!UnregisterOwner(Owner))
         UE_LOG(LogTemp, Warning, TEXT("UnregisterPlayerr(): Owner not found ?!"))
 }
 
-bool UCHORSubsystem::UnregisterOwner(AActor *Owner)
+bool UCHORUSSubsystem::UnregisterOwner(AActor *Owner)
 {
     if (!Owners.IsEmpty() && Owners.Contains(Owner))
     {
@@ -80,43 +80,43 @@ bool UCHORSubsystem::UnregisterOwner(AActor *Owner)
     return false;
 }
 
-void UCHORSubsystem::UnregisterRecorder(AActor *Owner)
+void UCHORUSSubsystem::UnregisterRecorder(AActor *Owner)
 {
     if (!UnregisterOwner(Owner))
         UE_LOG(LogTemp, Warning, TEXT("UnregisterRecorder(): Owner not found ?!"))
 }
 
-void UCHORSubsystem::RegisterRecorder(AActor* Owner)
+void UCHORUSSubsystem::RegisterRecorder(AActor* Owner)
 {
     FControlStruct NewControl;
 	
     RegisterOwner(Owner, NewControl);
 }
 
-void UCHORSubsystem::RecordFrame(int32 Track, const FChorusFrame& frame)
+void UCHORUSSubsystem::RecordFrame(int32 Track, const FChorusFrame& frame)
 {
 	Tracks[Track].Frames.Push(frame);
 	Tracks[Track].Frames.Last().FrameReady = true;
 }
 
-UCHORSubsystem::UCHORSubsystem()
+UCHORUSSubsystem::UCHORUSSubsystem()
 {
     NextOwner = 0;
 }
 
-void UCHORSubsystem::Initialize(FSubsystemCollectionBase& Collection)
+void UCHORUSSubsystem::Initialize(FSubsystemCollectionBase& Collection)
 {
     NextOwner = 0;
     
 	Super::Initialize(Collection);
 }
 
-void UCHORSubsystem::Deinitialize()
+void UCHORUSSubsystem::Deinitialize()
 {
 	Super::Deinitialize();
 }
 
-void UCHORSubsystem::GetTrackStatus(const int Track, bool& IsRecording)
+void UCHORUSSubsystem::GetTrackStatus(const int Track, bool& IsRecording)
 {
 	IsRecording = false;
 	
@@ -138,7 +138,7 @@ void UCHORSubsystem::GetTrackStatus(const int Track, bool& IsRecording)
 	}
 }
 
-void UCHORSubsystem::TriggerStartOfTrackEvent(AActor* Owner, const int& Track)
+void UCHORUSSubsystem::TriggerStartOfTrackEvent(AActor* Owner, const int& Track)
 {
 	AsyncTask(ENamedThreads::GameThread, [this, Owner, Track]()
 	{
@@ -146,7 +146,7 @@ void UCHORSubsystem::TriggerStartOfTrackEvent(AActor* Owner, const int& Track)
 	});
 }
 
-void UCHORSubsystem::TriggerOnLoopEvent(AActor* Owner, int Track, bool Forward)
+void UCHORUSSubsystem::TriggerOnLoopEvent(AActor* Owner, int Track, bool Forward)
 {
 	AsyncTask(ENamedThreads::GameThread, [this, Owner, Track, Forward]()
 {
@@ -154,7 +154,7 @@ void UCHORSubsystem::TriggerOnLoopEvent(AActor* Owner, int Track, bool Forward)
 });
 }
 
-void UCHORSubsystem::TriggerEndOfTrackEvent(AActor* Owner, const int& Track)
+void UCHORUSSubsystem::TriggerEndOfTrackEvent(AActor* Owner, const int& Track)
 {
 	AsyncTask(ENamedThreads::GameThread, [this, Owner, Track]()
 	{
@@ -162,27 +162,27 @@ void UCHORSubsystem::TriggerEndOfTrackEvent(AActor* Owner, const int& Track)
 	});
 }
 
-int32 UCHORSubsystem::GetNewOwner()
+int32 UCHORUSSubsystem::GetNewOwner()
 {
 	return GetNextOwner();
 }
 
-void UCHORSubsystem::ControlRecorder(AActor *Owner, const bool Record, FChorusCuePoint &CuePoint)
+void UCHORUSSubsystem::ControlRecorder(AActor *Owner, const bool Record, FChorusCuePoint &CuePoint)
 {
     CuePoint = PlayPauseRecorder(Owner, Record, -1);
 }
 
-void UCHORSubsystem::StartRecording(AActor *Owner, int32 Track, FChorusCuePoint &CuePoint)
+void UCHORUSSubsystem::StartRecording(AActor *Owner, int32 Track, FChorusCuePoint &CuePoint)
 {
 	CuePoint = PlayPauseRecorder(Owner, true, Track);
 }
 
-void UCHORSubsystem::StopRecording(AActor *Owner, FChorusCuePoint &CuePoint)
+void UCHORUSSubsystem::StopRecording(AActor *Owner, FChorusCuePoint &CuePoint)
 {
 	CuePoint = PlayPauseRecorder(Owner, false, -1);
 }
 
-void UCHORSubsystem::PlayFromCuePointForDuration(AActor *Owner, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play)
+void UCHORUSSubsystem::PlayFromCuePointForDuration(AActor *Owner, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play)
 {
 	FChorusCuePoint End;
 	End.SetTimestamp(Start.Timestamp(this) + Duration);
@@ -192,7 +192,7 @@ void UCHORSubsystem::PlayFromCuePointForDuration(AActor *Owner, FChorusCuePoint 
 	ControlPlayer(Owner, Start, End, Speed, Loop, Play);
 }
 
-void UCHORSubsystem::ControlPlayer(AActor *Owner
+void UCHORUSSubsystem::ControlPlayer(AActor *Owner
                                            , const FChorusCuePoint Start
                                            , const FChorusCuePoint End
                                            , const float Speed
@@ -222,7 +222,7 @@ void UCHORSubsystem::ControlPlayer(AActor *Owner
 	}
 }
 
-void UCHORSubsystem::GetRecorderStatus(AActor *Owner, bool &bIsRecording, int32 &Track)
+void UCHORUSSubsystem::GetRecorderStatus(AActor *Owner, bool &bIsRecording, int32 &Track)
 {
 	if (Owners.Contains(Owner))
 	{
@@ -232,7 +232,7 @@ void UCHORSubsystem::GetRecorderStatus(AActor *Owner, bool &bIsRecording, int32 
 	}
 }
 
-void UCHORSubsystem::GetPlayerStatus(AActor *Owner
+void UCHORUSSubsystem::GetPlayerStatus(AActor *Owner
                                              , FChorusCuePoint& Start
                                              , FChorusCuePoint& End
                                              , bool& bIsPlaying
@@ -251,7 +251,7 @@ void UCHORSubsystem::GetPlayerStatus(AActor *Owner
 	}
 }
 
-void UCHORSubsystem::SetPlayerLooping(AActor* Owner, bool loop)
+void UCHORUSSubsystem::SetPlayerLooping(AActor* Owner, bool loop)
 {
 	
 	if (Owners.Contains(Owner))
@@ -260,7 +260,7 @@ void UCHORSubsystem::SetPlayerLooping(AActor* Owner, bool loop)
 	}
 }
 
-void UCHORSubsystem::ResumePlayer(AActor* Owner)
+void UCHORUSSubsystem::ResumePlayer(AActor* Owner)
 {
 	
 	if (Owners.Contains(Owner))
@@ -269,7 +269,7 @@ void UCHORSubsystem::ResumePlayer(AActor* Owner)
 	}
 }
 
-void UCHORSubsystem::PausePlayer(AActor* Owner)
+void UCHORUSSubsystem::PausePlayer(AActor* Owner)
 {
 	
 	if (Owners.Contains(Owner))
@@ -278,7 +278,7 @@ void UCHORSubsystem::PausePlayer(AActor* Owner)
 	}
 }
 
-void UCHORSubsystem::SetPlayerSpeed(AActor* Owner, float Speed)
+void UCHORUSSubsystem::SetPlayerSpeed(AActor* Owner, float Speed)
 {
 	if (Owners.Contains(Owner))
 	{
@@ -286,7 +286,7 @@ void UCHORSubsystem::SetPlayerSpeed(AActor* Owner, float Speed)
 	}
 }
 
-void UCHORSubsystem::DeleteTrack(const int Track)
+void UCHORUSSubsystem::DeleteTrack(const int Track)
 {
 	if (Tracks.Contains(Track))
 	{
@@ -295,7 +295,7 @@ void UCHORSubsystem::DeleteTrack(const int Track)
 	}
 }
 
-void UCHORSubsystem::GetNewTrack(int &NewTrack)
+void UCHORUSSubsystem::GetNewTrack(int &NewTrack)
 {
 	TArray<int> OldTracks;
 	ListTracks(OldTracks);
@@ -308,12 +308,12 @@ void UCHORSubsystem::GetNewTrack(int &NewTrack)
 	}
 }
 
-void UCHORSubsystem::ListTracks(TArray<int>& TracksOut)
+void UCHORUSSubsystem::ListTracks(TArray<int>& TracksOut)
 {
 	Tracks.GetKeys(TracksOut);
 }
 
-void UCHORSubsystem::ListCuePoints(const int Track, TArray<FChorusCuePoint>& CuePoints)
+void UCHORUSSubsystem::ListCuePoints(const int Track, TArray<FChorusCuePoint>& CuePoints)
 {
 	if (Tracks.Contains(Track))
 	{
@@ -321,7 +321,7 @@ void UCHORSubsystem::ListCuePoints(const int Track, TArray<FChorusCuePoint>& Cue
 	}
 }
 
-void UCHORSubsystem::DeleteCuePoint(FChorusCuePoint CuePoint)
+void UCHORUSSubsystem::DeleteCuePoint(FChorusCuePoint CuePoint)
 {
 	if (Tracks.Contains(CuePoint.Track))
 	{
@@ -342,7 +342,7 @@ void UCHORSubsystem::DeleteCuePoint(FChorusCuePoint CuePoint)
 	}
 }
 
-void UCHORSubsystem::AddCuePoint(const int Track, FChorusCuePoint &CuePoint)
+void UCHORUSSubsystem::AddCuePoint(const int Track, FChorusCuePoint &CuePoint)
 {
 	bool isRecording = false;
 	GetTrackStatus(Track, isRecording);
@@ -360,23 +360,23 @@ void UCHORSubsystem::AddCuePoint(const int Track, FChorusCuePoint &CuePoint)
 	}
 }
 
-void UCHORSubsystem::ArchiveClip(FString Name, FChorusCuePoint Start, FChorusCuePoint End)
+void UCHORUSSubsystem::ArchiveClip(FString Name, FChorusCuePoint Start, FChorusCuePoint End)
 {
 }
 
-void UCHORSubsystem::DeleteClip(FString Name)
+void UCHORUSSubsystem::DeleteClip(FString Name)
 {
 }
 
-void UCHORSubsystem::ListClips(TArray<FString>& Names)
+void UCHORUSSubsystem::ListClips(TArray<FString>& Names)
 {
 }
 
-void UCHORSubsystem::LoadClip(FString Name, int& Track, FChorusCuePoint& Start, FChorusCuePoint& End)
+void UCHORUSSubsystem::LoadClip(FString Name, int& Track, FChorusCuePoint& Start, FChorusCuePoint& End)
 {
 }
 
-void UCHORSubsystem::GetClipLength( FChorusCuePoint Start,  FChorusCuePoint End, float& Length)
+void UCHORUSSubsystem::GetClipLength( FChorusCuePoint Start,  FChorusCuePoint End, float& Length)
 {
 	if (Start.Track != End.Track)
 	{

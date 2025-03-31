@@ -41,7 +41,7 @@ private:
 	FChorusPlayHead PlayHead;
 
 	UPROPERTY()
-	UCHORSubsystem* ChorusSubSystem;
+	UCHORUSSubsystem* ChorusSubSystem;
 	
 	void InterpolatePose(const FChorusFrame& FrameA, const FChorusFrame& FrameB, const float Alpha, FPoseContext& Output) const;
 	bool ReplayRecording(FPoseContext& Output);

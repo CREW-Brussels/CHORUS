@@ -24,7 +24,7 @@ FChorusCuePoint::~FChorusCuePoint()
     
 }
 
-double const FChorusCuePoint::Timestamp(UCHORSubsystem *Subsystem)
+double const FChorusCuePoint::Timestamp(UCHORUSSubsystem *Subsystem)
 {
     if (_TimeStamp != -1)
         return _TimeStamp;
