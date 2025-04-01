@@ -1,6 +1,7 @@
 # CHORUS
 
 CHORUS Animation Subsystem is a group of tools that help creating a bridge between the performers and multiple animation possibilities. Either the performer wishes to duplicate themselves, record and replay animation on an avatar, or incorporate any avatar, the possibilities are endless.
+> As an analogy, imagine you are recording a video (using a **recorder**): you record and then it creates a track (a file) composed of multiple frames (numbers). A precise frame is called a cue point and acts as a bookmark. Once this video is recorded, you can open a video player to read and watch this track. You are then using a **player**. That is basically what we are doing using Chorus Subsystem.
 
 
 ***
@@ -65,9 +66,6 @@ It's composed of a sequence player (or live link if you're using MOCAP) and Chor
 
 → **ABP\_ChorusPlayer** is the animation blueprint that will playback the data from the recorder.
 
-It's composed of a sequence player (or live link if you're using MOCAP) and Chorus Player.
-
-  
 
 > _For the example, we are using an idle animation._
 
@@ -147,17 +145,18 @@ After the Stop recording node, with the node _Get Actor of Class,_ link call Act
 
   
 
-As part of the example, we've decided here to add inputs + and - and from the gamepad controller to modify the speed. You should then first enable inputs in the event graph
+As part of the example, we've decided here to add inputs + and - from keyboard and from the gamepad controller to modify the speed. We are using an Inputs Mapping Context and Input Actions. You should then first enable inputs in the event graph
 
-![](https://t9012172487.p.clickup-attachments.com/t9012172487/affa0c04-113e-45b5-be60-248c24a056ae/Screenshot%202025-03-28%20145656.png)
 
   
+![Screenshot 2025-04-01 141207](https://github.com/user-attachments/assets/cbeb1c28-874b-4cef-b9f3-6ff0827811ef)
 
   
 
 We here use the node Set Player Speed to modify and add the inputs on our replay speed. The speed is a float variable.
 
-![Screenshot 2025-04-01 122138](https://github.com/user-attachments/assets/1afc27af-e4f0-410d-8201-aabe0821e3b0)
+![Screenshot 2025-04-01 122138](https://github.com/user-attachments/assets/95dd88c6-3a4f-4513-94fc-2bdc2d7dfb87)
+
 
 ***
 
@@ -183,7 +182,7 @@ In the **BP\_ChorusRecorder** like created earlier:
 
   
 
-![Screenshot 2025-04-01 122506](https://github.com/user-attachments/assets/b0a1f052-70a5-4bde-83ac-bed826f66c38)
+![Screenshot 2025-04-01 141815](https://github.com/user-attachments/assets/df520d35-94ba-4363-a920-e26cb0e7f4b7)
 
 
 Drop the **BP\_EchoManager** from the CHORUS Plugin in your scene, and set the Count (number of iterations), delay (time between the iterations)
