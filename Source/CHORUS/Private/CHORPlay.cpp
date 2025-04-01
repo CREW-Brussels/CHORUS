@@ -129,7 +129,7 @@ void FCHORPlay::InitializePlayHead()
     PlayHead.Timestamp = time += sec;
 }
 
-void FCHORPlay::InterpolatePose(const FChorusFrame &FrameA, const FChorusFrame &FrameB, const float Alpha, FPoseContext& Output) const
+void FCHORPlay::InterpolatePose(const FChorusFrame &FrameA, const FChorusFrame &FrameB, const float Alpha, FPoseContext& Output)
 {
     if (FrameA.pose.Num() != Output.Pose.GetNumBones() || FrameB.pose.Num() != Output.Pose.GetNumBones()) {
         UE_LOG(LogTemp, Warning, TEXT("Input: %d, FrameA: %d, FrameB: %d"), Output.Pose.GetNumBones(), FrameA.pose.Num(), FrameB.pose.Num());
@@ -168,7 +168,15 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         {
             if (ChorusSubSystem->Owners[Owner].bLoop)
             {
-                CurrentTime += true_end - PlayHead.StartTime;
+                if (ChorusSubSystem->Owners[Owner].bPalindrome)
+                {
+                    ChorusSubSystem->Owners[Owner].Speed *= -1;
+                    CurrentTime = t - CurrentTime;
+                }
+                else
+                {
+                    CurrentTime += true_end - PlayHead.StartTime;
+                }
                 ChorusSubSystem->TriggerOnLoopEvent(Owner, PlayHead.Track, false);
             }
             else
@@ -181,7 +189,12 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
         }
         if (CurrentTime > true_end)
         {
-            if (ChorusSubSystem->Owners[Owner].bLoop)
+            if (ChorusSubSystem->Owners[Owner].bPalindrome)
+            {
+                ChorusSubSystem->Owners[Owner].Speed *= -1;
+                CurrentTime = true_end - (CurrentTime - true_end);
+            }
+            else if (ChorusSubSystem->Owners[Owner].bLoop)
             {
                 CurrentTime -= true_end - PlayHead.StartTime;
                 ChorusSubSystem->TriggerOnLoopEvent(Owner, PlayHead.Track, true);

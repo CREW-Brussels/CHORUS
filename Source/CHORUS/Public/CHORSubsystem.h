@@ -87,6 +87,7 @@ public:
 	 * @param End CuePoint marking the end of the clip
 	 * @param Speed The play speed
 	 * @param Loop if true the clip will loop
+	 * @param Palindrome
 	 * @param Play
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
@@ -95,6 +96,7 @@ public:
 	                   , FChorusCuePoint End
 	                   , float Speed = 1.0f
 	                   , bool Loop = false
+	                   , bool Palindrome = false
 	                   , bool Play = true);
 
 	/**
@@ -114,7 +116,8 @@ public:
 	 * @param Start 
 	 * @param End 
 	 * @param bIsPlaying 
-	 * @param bIsLoop 
+	 * @param bIsLoop
+	 * @param bIsPalindrome 
 	 * @param Speed 
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")
@@ -123,6 +126,7 @@ public:
 	                     , UPARAM(DisplayName = "End") FChorusCuePoint& End
 	                     , UPARAM(DisplayName = "Is Playing") bool& bIsPlaying
 	                     , UPARAM(DisplayName = "isLoop") bool& bIsLoop
+	                     , UPARAM(DisplayName = "isPalindrome") bool& bIsPalindrome
 	                     , UPARAM(DisplayName = "Speed") float& Speed);
 	
 
@@ -147,10 +151,11 @@ public:
 	 * @param Duration Duration to play for in seconds
 	 * @param Speed The play speed
 	 * @param Loop if true the clip will loop
+	 * @param Palindrome
 	 * @param Play if true, starts playing, otherwise pauses
 	 */
 	UFUNCTION(BlueprintCallable, Category = "Chorus")
-	void PlayFromCuePointForDuration(AActor* Owner, FChorusCuePoint Start, float Duration, float Speed = 1.0f, bool Loop = false, bool Play = true);
+	void PlayFromCuePointForDuration(AActor* Owner, FChorusCuePoint Start, float Duration, float Speed = 1.0f, bool Loop = false, bool Palindrome = false, bool Play = true);
 	
 	/**
 	 * Determine if a Track is currently recording
@@ -172,6 +177,7 @@ public:
 
 	/**
 	 * Returns all existing tracks
+	 * @param TracksOut
 	 * @param Tracks 
 	 */
 	UFUNCTION(BlueprintCallable, Category="Chorus")

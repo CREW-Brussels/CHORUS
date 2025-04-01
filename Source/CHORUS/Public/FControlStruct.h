@@ -39,4 +39,7 @@ public :
 
 	UPROPERTY()
 	float Position;
+
+	UPROPERTY()
+	bool bPalindrome = false;;
 };

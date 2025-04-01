@@ -182,28 +182,30 @@ void UCHORUSSubsystem::StopRecording(AActor *Owner, FChorusCuePoint &CuePoint)
 	CuePoint = PlayPauseRecorder(Owner, false, -1);
 }
 
-void UCHORUSSubsystem::PlayFromCuePointForDuration(AActor *Owner, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Play)
+void UCHORUSSubsystem::PlayFromCuePointForDuration(AActor *Owner, FChorusCuePoint Start, float Duration, float Speed, bool Loop, bool Palindrome, bool Play)
 {
 	FChorusCuePoint End;
 	End.SetTimestamp(Start.Timestamp(this) + Duration);
 	End.Track = Start.Track;
 	End.Index = -1;
 	
-	ControlPlayer(Owner, Start, End, Speed, Loop, Play);
+	ControlPlayer(Owner, Start, End, Speed, Loop, Palindrome, Play);
 }
 
-void UCHORUSSubsystem::ControlPlayer(AActor *Owner
-                                           , const FChorusCuePoint Start
-                                           , const FChorusCuePoint End
-                                           , const float Speed
-                                           , const bool Loop
-                                           , const bool Play)
+void UCHORUSSubsystem::ControlPlayer(AActor* Owner
+                                     , FChorusCuePoint Start
+                                     , FChorusCuePoint End
+                                     , float Speed
+                                     , bool Loop
+                                     , bool Palindrome
+                                     , bool Play)
 {
 	if (Owners.Contains(Owner))
 	{
 		FControlStruct *ControlStruct = &Owners[Owner];
 		ControlStruct->Speed = Speed;
 		ControlStruct->bLoop = Loop;
+		ControlStruct->bPlay = Palindrome;
 		if (ControlStruct->Start != Start)
 		{
 			ControlStruct->Start = Start;
@@ -237,6 +239,7 @@ void UCHORUSSubsystem::GetPlayerStatus(AActor *Owner
                                              , FChorusCuePoint& End
                                              , bool& bIsPlaying
                                              , bool& bIsLoop
+                                             , bool& bIsPalindrome
                                              , float& Speed)
 {
 	if (Owners.Contains(Owner))
@@ -248,6 +251,7 @@ void UCHORUSSubsystem::GetPlayerStatus(AActor *Owner
 		bIsPlaying = ControlStruct.bPlay;
 		bIsLoop = ControlStruct.bLoop;
 		Speed = ControlStruct.Speed;
+		bIsPalindrome = ControlStruct.bPalindrome;
 	}
 }
 
