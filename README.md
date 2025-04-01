@@ -35,9 +35,6 @@ Download CHORUS Plugin here (link incoming)
 
 > * Cue point: A cue point is a defined position marker that belongs to a track.
 
-> * Control ID: will change name and become **owner**
-
-
 ***
 
 # Example 1: Record and Replay any animation
@@ -135,13 +132,14 @@ Cue points from start and stop recording nodes should be promoted as variables
 
 On Start Recording Node, **Track should set at 0 by default**, it will then never overwrite a used track.
 
-![](https://t9012172487.p.clickup-attachments.com/t9012172487/0503ef13-1877-4d8e-84fd-fe9d55f08e00/Screenshot%202025-03-28%20142532.png)
+![Screenshot 2025-04-01 121741](https://github.com/user-attachments/assets/2109b104-cc9f-4ff6-bf00-dd59525a3313)
+
 
 After the Stop recording node, with the node _Get Actor of Class,_ link call Actor Class **BP\_ChorusPlayer** that we created earlier. It will allow replaying the recorded animation in the player.
 
   
 
-![](https://t9012172487.p.clickup-attachments.com/t9012172487/7c841c53-0e06-4bd3-9ad7-bd554187d0e0/Screenshot%202025-03-28%20142408.png)
+![Screenshot 2025-04-01 122022](https://github.com/user-attachments/assets/61d38101-93b4-4bac-998d-ffde81f5e0a3)
 
 ***
 
@@ -159,7 +157,7 @@ As part of the example, we've decided here to add inputs + and - and from the ga
 
 We here use the node Set Player Speed to modify and add the inputs on our replay speed. The speed is a float variable.
 
-![](https://t9012172487.p.clickup-attachments.com/t9012172487/02d12b9f-0241-4c1e-a7b0-9583ba2868b0/Screenshot%202025-03-28%20150551.png)
+![Screenshot 2025-04-01 122138](https://github.com/user-attachments/assets/1afc27af-e4f0-410d-8201-aabe0821e3b0)
 
 ***
 
@@ -185,7 +183,8 @@ In the **BP\_ChorusRecorder** like created earlier:
 
   
 
-![](https://t9012172487.p.clickup-attachments.com/t9012172487/7f87b7fc-9aa9-46e5-aead-15145d6669dd/Screenshot%202025-03-27%20171555.png)
+![Screenshot 2025-04-01 122506](https://github.com/user-attachments/assets/b0a1f052-70a5-4bde-83ac-bed826f66c38)
+
 
 Drop the **BP\_EchoManager** from the CHORUS Plugin in your scene, and set the Count (number of iterations), delay (time between the iterations)
 
