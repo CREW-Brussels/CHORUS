@@ -32,7 +32,7 @@ Download CHORUS Plugin here (link incoming)
 
 
 > #### _Good to know_
-
+> * Get all of CHORUS tools from the node: **CHORUSSUBSYSTEM**
 > * Cue point: A cue point is a defined position marker that belongs to a track.
 
 ***
