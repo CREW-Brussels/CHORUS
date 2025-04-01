@@ -171,7 +171,7 @@ bool FCHORPlay::ReplayRecording(FPoseContext& Output)
                 if (ChorusSubSystem->Owners[Owner].bPalindrome)
                 {
                     ChorusSubSystem->Owners[Owner].Speed *= -1;
-                    CurrentTime = t - CurrentTime;
+                    CurrentTime = t + (t - CurrentTime);
                 }
                 else
                 {

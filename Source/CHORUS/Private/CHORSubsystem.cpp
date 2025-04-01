@@ -205,7 +205,8 @@ void UCHORUSSubsystem::ControlPlayer(AActor* Owner
 		FControlStruct *ControlStruct = &Owners[Owner];
 		ControlStruct->Speed = Speed;
 		ControlStruct->bLoop = Loop;
-		ControlStruct->bPlay = Palindrome;
+		ControlStruct->bPlay = Play;
+		ControlStruct->bPalindrome = Palindrome;
 		if (ControlStruct->Start != Start)
 		{
 			ControlStruct->Start = Start;
