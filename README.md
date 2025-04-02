@@ -217,3 +217,18 @@ The EchoClass should be BP\_ChorusPlayer
 > ![Screenshot 2025-04-02 112647](https://github.com/user-attachments/assets/3795dedd-5a74-4edc-9301-6ae128620144)
 > As a parameter of this node, chose the bone Pelvis
 
+
+***
+
+
+## About
+<img src="https://github.com/user-attachments/assets/bc9dba6e-2478-4d09-86ca-c735ae73f21b" alt="CREW-LOGO" width="130"/>  
+<img src="https://emil-xr.eu/wp-content/uploads/2022/10/logo_emil-272x300.png)" alt="EMIL-XR-LOGO" width="100"/>
+
+> CHORUS, a submodule of EXP, is being developed by [CREW](http://crew.brussels) as part of [EMIL](https://emil-xr.eu/), the European Media and Immersion Lab, an Innovation Action funded by the European Union and co-funded by Innovate UK. 
+
+## Funding
+<img src="https://emil-xr.eu/wp-content/uploads/2022/10/EN-Funded-by-the-EU-POS-1024x215.png)" alt="EU" height="100"/>
+
+> This project has received funding from the European Union's Horizon Europe Research and Innovation Programme under Grant Agreement No 101070533 EMIL.
+
