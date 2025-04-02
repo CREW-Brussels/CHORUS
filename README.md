@@ -7,23 +7,36 @@ CHORUS Animation Subsystem is a group of tools that help creating a bridge betwe
 ***
   
 
-Here is the detailed list of what it is constituted of:
+Here is the detailed list of all of the nodes:
 
   
 
-*   List from Balt's code with all of the existing node and what they do
-    
-*   1
-    
-*   2
-    
-*   3
-    
-*   ...
-    
+* Add Cue Point
+* Control Player
+* Control Recorder
+* Delete Cue Point
+* DeleteTrack
+* Get Clip Length
+* Get New Owner
+* Get New Track
+* Get Player Status
+* Get Recorder Status
+* List Cue Points
+* List Tracks
+* Pause Player
+* Play from Cue Point for Duration
+* Resume Player
+* Set Player Looping
+* Set Player Speed
+* Start Recording
+* Stop Recording
+* Trigger End of Track Event
 
-  
+And events:
 
+* OnEndOfTrackEvent
+* OnStartOfTrackEvent
+* OnLoopEvent
 Download CHORUS Plugin here (link incoming)
 
 (Don't forget to activate it in the plugins section)
