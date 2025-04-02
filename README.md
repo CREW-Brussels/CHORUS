@@ -73,7 +73,8 @@ It's composed of a sequence player (or live link if you're using MOCAP) and Chor
 
 > _For the example, we are using a run animation._
 
-![](https://t9012172487.p.clickup-attachments.com/t9012172487/e3c699c7-38b3-481f-ac27-f5861762dde3/Screenshot%202025-03-28%20122013.png)
+
+![Screenshot 2025-04-02 112624](https://github.com/user-attachments/assets/6e7093bb-cd8f-4500-a186-6e145f899b8f)
 
   
 
@@ -82,7 +83,7 @@ It's composed of a sequence player (or live link if you're using MOCAP) and Chor
 
 > _For the example, we are using an idle animation._
 
-![](https://t9012172487.p.clickup-attachments.com/t9012172487/9ed403c3-f32f-4ad2-8742-f0fcd8ce160f/Screenshot%202025-03-28%20122814.png)
+![Screenshot 2025-04-02 112529](https://github.com/user-attachments/assets/c909d190-22a3-4bbe-ab15-8864ba18d43c)
 
 ***
 
@@ -205,3 +206,13 @@ Drop the **BP\_EchoManager** from the CHORUS Plugin in your scene, and set the C
 The EchoClass should be BP\_ChorusPlayer
 
 ![](https://t9012172487.p.clickup-attachments.com/t9012172487/91c2c8dc-9bc7-405d-ab00-db61c37a81e4/Screenshot%202025-03-28%20153106.png)
+
+> In this case, because we are using a hovering animation (the character is runing but not moving forward), we can add these aditional nodes in the BP_ChorusRecorder:
+> 
+> ![Screenshot 2025-04-02 113747](https://github.com/user-attachments/assets/adad055c-a1ec-487a-a9b2-a02990b8d821)
+> 
+> Add EditBonePosition in the ABP_ChorusRecorder:
+> 
+> ![Screenshot 2025-04-02 112647](https://github.com/user-attachments/assets/3795dedd-5a74-4edc-9301-6ae128620144)
+> As a parameter of this node, chose the bone Pelvis
+
