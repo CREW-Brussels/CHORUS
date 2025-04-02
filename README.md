@@ -37,7 +37,8 @@ And events:
 * OnEndOfTrackEvent
 * OnStartOfTrackEvent
 * OnLoopEvent
-Download CHORUS Plugin here (link incoming)
+
+Download [CHORUS Plugin](https://github.com/CREW-Brussels/CHORUS/releases) and put it in the Unreal Plugins Folder of your project
 
 (Don't forget to activate it in the plugins section)
 
