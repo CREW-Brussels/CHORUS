@@ -5,38 +5,7 @@ CHORUS Animation Subsystem is a group of tools that help creating a bridge betwe
 
 
 ***
-  
 
-Here is the detailed list of all of the nodes:
-
-  
-
-* Add Cue Point
-* Control Player
-* Control Recorder
-* Delete Cue Point
-* DeleteTrack
-* Get Clip Length
-* Get New Owner
-* Get New Track
-* Get Player Status
-* Get Recorder Status
-* List Cue Points
-* List Tracks
-* Pause Player
-* Play from Cue Point for Duration
-* Resume Player
-* Set Player Looping
-* Set Player Speed
-* Start Recording
-* Stop Recording
-* Trigger End of Track Event
-
-And events:
-
-* OnEndOfTrackEvent
-* OnStartOfTrackEvent
-* OnLoopEvent
 
 Download [CHORUS Plugin](https://github.com/CREW-Brussels/CHORUS/releases) and put it in the Unreal Plugins Folder of your project
 
@@ -217,6 +186,39 @@ The EchoClass should be BP\_ChorusPlayer
 > ![Screenshot 2025-04-02 112647](https://github.com/user-attachments/assets/3795dedd-5a74-4edc-9301-6ae128620144)
 > As a parameter of this node, chose the bone Pelvis
 
+***
+
+## Index
+Here is the detailed list of all of the nodes:
+
+  
+
+* Add Cue Point
+* Control Player
+* Control Recorder
+* Delete Cue Point
+* DeleteTrack
+* Get Clip Length
+* Get New Owner
+* Get New Track
+* Get Player Status
+* Get Recorder Status
+* List Cue Points
+* List Tracks
+* Pause Player
+* Play from Cue Point for Duration
+* Resume Player
+* Set Player Looping
+* Set Player Speed
+* Start Recording
+* Stop Recording
+* Trigger End of Track Event
+
+And events:
+
+* OnEndOfTrackEvent
+* OnStartOfTrackEvent
+* OnLoopEvent
 
 ***
 
