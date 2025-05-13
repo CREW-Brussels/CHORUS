@@ -29,13 +29,14 @@ Prerequesites:
 ![CHORUS-Record_Replay](https://github.com/user-attachments/assets/45a60d18-13c0-48f1-b2ef-756e7e0330a5)
 
 
-> In this first example, we are going to replay and record an animation from one avatar to the other. Here, the left character is the one being recorded, and right one is the one replaying the animation.
+> In this first example, we are going to replay and record an animation from one avatar to the other. Here, the right character is the one being recorded, and left one is the one replaying the animation.
 
 ***
 
 ## 1. Create two animation blueprints:
 > An Animation Blueprint in Unreal Engine is a visual scripting system that manages character animation logic.
 
+![record_ABP-ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/42834292-e70a-4cd0-a650-fb2e9df9d430)
 
 → **ABP\_ChorusRecorder** is the animation blueprint we are recording data from. Here, we are using the Skeleton SKM_Manu_Skeleton, which is the same Skeleton as our Skeletal Mesh, SKM_Manu.
 
@@ -57,11 +58,13 @@ The sequence player here will be the one being recorded.
 
 ## 2. Create two actor blueprints
 
-  
+  ![BPGIF-ezgif com-optimize](https://github.com/user-attachments/assets/6e46baa0-d84f-4648-a9b6-d4e6aa8aff18)
+
 
 → **BP\_ChorusRecorder**
 
 * Import your skeleton mesh in the blueprint
+![Screenshot 2025-05-13 111754](https://github.com/user-attachments/assets/21b4be36-e003-4430-ba02-0c108b0a6a24)
 
 ![](https://t9012172487.p.clickup-attachments.com/t9012172487/069fd209-4656-4cc4-a5ba-058ace23a82a/Screenshot%202025-03-28%20134109.png)
 
@@ -72,6 +75,7 @@ The sequence player here will be the one being recorded.
 → **BP\_ChorusPlayer**
 
 * Import your skeleton mesh in the blueprint
+
 
 ![](https://t9012172487.p.clickup-attachments.com/t9012172487/ac3892ef-8629-4012-93de-e16afb5df8f4/image.png)
 
@@ -85,8 +89,8 @@ The sequence player here will be the one being recorded.
 
 
 ## 3. Edit **BP\_ChorusPlayer**
-> _in the event graph_
-  
+> _in the Event Graph_
+
 
 As part of the example, we've decided here to add inputs + and - from keyboard and from the gamepad controller to modify the speed. We are using an Inputs Mapping Context and Input Actions. You should then first enable inputs in the event graph. If you need to know more about inputs, you can find more in [Unreal's documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine).
 
@@ -105,7 +109,7 @@ We use the node _Set Player Speed_ from ChorusSubsystem to modify the speed of t
 ***
 ## 4. Edit **BP_ChorusRecorder**
 
-> _in the event graph_
+> _in the Event Graph_
 
   
 As part of the example, we've decided here to add debug key o to start and stop/play the recordings. You should then first enable inputs in the event graph.
@@ -124,7 +128,8 @@ Cue points from start and stop recording nodes should be promoted as variables
 > ![](https://t9012172487.p.clickup-attachments.com/t9012172487/d0d04ba3-f41a-45a4-92d6-00380e1c2db1/Screenshot%202025-03-28%20142538.png)
 ( imagine them being brackets in the track \[ \] )
 
-  
+![ezgif com-video-to-gif-converter](https://github.com/user-attachments/assets/cefae223-6a24-4592-adaf-c66a629f39ff)
+
 
   
 
@@ -140,8 +145,8 @@ We are also using the Speed variable created earlier in BP_Chorus Player. From t
 ![Screenshot 2025-04-01 122022](https://github.com/user-attachments/assets/61d38101-93b4-4bac-998d-ffde81f5e0a3)
 
 ***
-The system is now ready! :-) 
-You can now in play mode, with your inputs, Start and Stop the recording of an animation, and display it on an other avatar once it's stopped!
+The system is now ready! :-) Drag and drop the two blueprints in the scene.
+You can now, in play mode and with your inputs, Start and Stop the recording of an animation, and display it on an other avatar once it's stopped!
 
 ***
 # Example 2: Echoes
