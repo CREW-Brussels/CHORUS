@@ -18,7 +18,7 @@ Prerequesites:
 
 
 > #### _Good to know_
-> * Get all of CHORUS tools from the node: **CHORUSSUBSYSTEM**. If you want to use any node related to Chorus, you need to first look for the node **CHORUSSUBSYSTEM**.
+> * If you want to use any node related to Chorus, you need to first look for the node **CHORUSSUBSYSTEM**.
 > * Cue point: A cue point is a defined position marker that belongs to a track.
 
 ***
@@ -83,14 +83,32 @@ The sequence player here will be the one being recorded.
 
 ***
 
+
+## 3. Edit **BP\_ChorusPlayer**
+> _in the event graph_
   
 
-## 3. Edit **BP_ChorusRecorder**
+As part of the example, we've decided here to add inputs + and - from keyboard and from the gamepad controller to modify the speed. We are using an Inputs Mapping Context and Input Actions. You should then first enable inputs in the event graph. If you need to know more about inputs, you can find more in [Unreal's documentation](https://dev.epicgames.com/documentation/en-us/unreal-engine/enhanced-input-in-unreal-engine).
+
+
+  
+![Screenshot 2025-04-01 141207](https://github.com/user-attachments/assets/cbeb1c28-874b-4cef-b9f3-6ff0827811ef)
+
+  
+First, create a float variable called "Speed".
+You should drag and drop it in your event graph, and Set Speed. We use the nodes **Add** and **Substract** to modify faster or slower the player's speed.
+We use the node _Set Player Speed_ from ChorusSubsystem to modify the speed of the replay, but it can also modified on some of the nodes themselves if "speed" is mentionned.
+
+![Screenshot 2025-04-01 122138](https://github.com/user-attachments/assets/95dd88c6-3a4f-4513-94fc-2bdc2d7dfb87)
+
+
+***
+## 4. Edit **BP_ChorusRecorder**
 
 > _in the event graph_
 
   
-As part of the example, we've decided here to add debug key O to start and stop/play the recordings. You should then first enable inputs in the event graph.
+As part of the example, we've decided here to add debug key o to start and stop/play the recordings. You should then first enable inputs in the event graph.
 
   
 
@@ -115,33 +133,17 @@ On Start Recording Node, **Track should set at 0 by default**, it will then neve
 ![Screenshot 2025-04-01 121741](https://github.com/user-attachments/assets/2109b104-cc9f-4ff6-bf00-dd59525a3313)
 
 
-After the Stop recording node, with the node _Get Actor of Class,_ link call Actor Class **BP\_ChorusPlayer** that we created earlier. It will allow replaying the recorded animation in the player.
-
+After the Stop recording node, with the node _Get Actor of Class_, chose Actor Class **BP\_ChorusPlayer** that we created earlier. It will allow replaying the recorded animation in the player.
+We are also using the Speed variable created earlier in BP_Chorus Player. From the node Get Actor of Glass, we're going to search as return value "get Speed", in order to use the Speed variable controllable with the - and + inputs or from the gamepad.
   
 
 ![Screenshot 2025-04-01 122022](https://github.com/user-attachments/assets/61d38101-93b4-4bac-998d-ffde81f5e0a3)
 
 ***
-
-## 4. Edit **BP\_ChorusPlayer**
-
-  
-
-As part of the example, we've decided here to add inputs + and - from keyboard and from the gamepad controller to modify the speed. We are using an Inputs Mapping Context and Input Actions. You should then first enable inputs in the event graph
-
-
-  
-![Screenshot 2025-04-01 141207](https://github.com/user-attachments/assets/cbeb1c28-874b-4cef-b9f3-6ff0827811ef)
-
-  
-
-We here use the node Set Player Speed to modify and add the inputs on our replay speed. The speed is a float variable.
-
-![Screenshot 2025-04-01 122138](https://github.com/user-attachments/assets/95dd88c6-3a4f-4513-94fc-2bdc2d7dfb87)
-
+The system is now ready! :-) 
+You can now in play mode, with your inputs, Start and Stop the recording of an animation, and display it on an other avatar once it's stopped!
 
 ***
-
 # Example 2: Echoes
 
 
