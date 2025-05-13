@@ -29,28 +29,25 @@ Prerequesites:
 ![CHORUS-Record_Replay](https://github.com/user-attachments/assets/45a60d18-13c0-48f1-b2ef-756e7e0330a5)
 
 
-> In this first example, we are going to replay and record an animation on a desired mesh. Here, the left character is the one being recorded, and right one is the one replaying the animation.
+> In this first example, we are going to replay and record an animation from one avatar to the other. Here, the left character is the one being recorded, and right one is the one replaying the animation.
 
 ***
 
 ## 1. Create two animation blueprints:
 > An Animation Blueprint in Unreal Engine is a visual scripting system that manages character animation logic.
-  
 
-→ **ABP\_ChorusRecorder** is the animation blueprint we are recording data from. Here, we are using the Skeleton SKM_Manu_Skeleton, which is the same Skeleton as our Skeletal Mesh, Manu.
+
+→ **ABP\_ChorusRecorder** is the animation blueprint we are recording data from. Here, we are using the Skeleton SKM_Manu_Skeleton, which is the same Skeleton as our Skeletal Mesh, SKM_Manu.
 
 It's composed of a sequence player (or live link if you're using MOCAP) and Chorus Recorder.
-
+The sequence player here will be the one being recorded.
   
-
-
 
 ![Screenshot 2025-04-02 112624](https://github.com/user-attachments/assets/6e7093bb-cd8f-4500-a186-6e145f899b8f)
 > _For the example, we are using a run animation. But any animation file, live or not, can be used_
   
 
-→ **ABP\_ChorusPlayer** is the animation blueprint that will playback the data from the recorder.
-
+→ **ABP\_ChorusPlayer** is the animation blueprint that will playback the data from the recorder. Here, we are using the Skeleton SKM_Manu_Skeleton, which is the same Skeleton as our Skeletal Mesh, SKM_Manu.
 
 
 
