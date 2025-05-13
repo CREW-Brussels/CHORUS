@@ -18,7 +18,7 @@ Prerequesites:
 
 
 > #### _Good to know_
-> * Get all of CHORUS tools from the node: **CHORUSSUBSYSTEM**
+> * Get all of CHORUS tools from the node: **CHORUSSUBSYSTEM**. If you want to use any node related to Chorus, you need to first look for the node **CHORUSSUBSYSTEM**.
 > * Cue point: A cue point is a defined position marker that belongs to a track.
 
 ***
