@@ -167,18 +167,16 @@ Using that, all of the echoes are able to be recorded and replayed using our CIR
 
   
 
-In the **BP\_ChorusRecorder** like created earlier:
-
-  
+1. In the **BP\_ChorusRecorder** like created earlier, create these nodes:
 
 ![Screenshot 2025-04-01 141815](https://github.com/user-attachments/assets/df520d35-94ba-4363-a920-e26cb0e7f4b7)
 
+* The node Get Actor Of Class is linked to **BP\_EchoManager** from the CHORUS Plugin.
+* Here, we are using the On Start node, which means that the iteration will appear when the Game Mode starts. However this can be unlinked, and used with an input or an other event.
 
-Drop the **BP\_EchoManager** from the CHORUS Plugin in your scene, and set the Count (number of iterations), delay (time between the iterations)
 
-  
-
-The EchoClass should be BP\_ChorusPlayer
+2. Drop the **BP\_EchoManager** from the CHORUS Plugin in your scene.
+3. In the Blueprint details, The EchoClass should be BP\_ChorusPlayer. Chose the Count (number of iterations), delay (time between the iterations).
 
 ![](https://t9012172487.p.clickup-attachments.com/t9012172487/91c2c8dc-9bc7-405d-ab00-db61c37a81e4/Screenshot%202025-03-28%20153106.png)
 
