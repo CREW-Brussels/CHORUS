@@ -4,8 +4,8 @@
 	"VersionName": "1.0",
 	"FriendlyName": "CHORUS",
 	"Description": "Animation tools by CREW Brussels",
-	"Category": "Other",
-	"CreatedBy": "Isjtar",
+	"Category": "CREW",
+	"CreatedBy": "CREW",
 	"CreatedByURL": "http://crew.brussels",
 	"DocsURL": "",
 	"MarketplaceURL": "",
@@ -14,7 +14,7 @@
 	"IsBetaVersion": false,
 	"IsExperimentalVersion": false,
 	"Installed": true,
-	"EnabledByDefault": false,
+	"EnabledByDefault": true,
 	"Modules": [
 		{
 			"Name": "CHORUS",
