@@ -22,6 +22,10 @@ public:
 	virtual FString GetDesc() override;
 	virtual FLinearColor GetNodeBodyTintColor() const override;
 
+	virtual FString GetNodeCategory() const override
+	{
+		return TEXT("Chorus");
+	}
 
 private:
 	

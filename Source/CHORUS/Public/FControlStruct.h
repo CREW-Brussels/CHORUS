@@ -14,13 +14,13 @@ public :
 	FControlStruct();
 
 	UPROPERTY()
-	bool Dirty;
+	bool Dirty = false;
 	
 	UPROPERTY()
-	bool bIsRecording;
+	bool bIsRecording = false;
 
 	UPROPERTY()
-	int32 Track;
+	int32 Track = 0;
 
 	UPROPERTY()
 	FChorusCuePoint Start;
@@ -32,14 +32,14 @@ public :
 	float Speed = 1.0f;
 
 	UPROPERTY()
-	bool bLoop;
+	bool bLoop = false;
 
 	UPROPERTY()
 	bool bPlay = true;
 
 	UPROPERTY()
-	float Position;
+	float Position = 0.f;
 
 	UPROPERTY()
-	bool bPalindrome = false;;
+	bool bPalindrome = false;
 };

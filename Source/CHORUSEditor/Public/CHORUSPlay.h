@@ -22,6 +22,11 @@ public:
 	virtual FString GetDesc() override;
 	virtual FText GetNodeTitle(ENodeTitleType::Type TitleType) const override;
 
+	virtual FString GetNodeCategory() const override
+	{
+		return TEXT("Chorus");
+	}
+
 private:
 	UCHORUSPlay(const FObjectInitializer& ObjectInitializer);
 };

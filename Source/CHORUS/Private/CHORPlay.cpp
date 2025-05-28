@@ -9,7 +9,6 @@
 #include "GameFramework/Pawn.h"
 #include "Animation/AnimInstanceProxy.h"
 #include "Kismet/GameplayStatics.h"
-#include "Microsoft/AllowMicrosoftPlatformTypes.h"
 #include "UObject/FastReferenceCollector.h"
 
 #include UE_INLINE_GENERATED_CPP_BY_NAME(CHORPlay)
