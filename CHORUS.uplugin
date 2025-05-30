@@ -27,4 +27,5 @@
 			"LoadingPhase": "Default"
 		}
 	]
+	"Icon": "MyPluginIcon.png"
 }
