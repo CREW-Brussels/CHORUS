@@ -10,8 +10,14 @@ Prerequesites:
 
 * Your project must contain a Skeletal Mesh Actor, or you have a skinned FBX character to import into Unreal Engine. If you don't have any, you can always use our Skeletal Mesh SKM_Manu in our XR utilities template (link coming) or create one using Blender and a Plugin such as [Auto-Rig Pro](https://www.lucky3d.fr/auto-rig-pro/doc/). Documentation on this topic is available online! 
 
-* Download [CHORUS Plugin](https://github.com/CREW-Brussels/CHORUS) and put it in the Unreal Plugins Folder of your project
-(Don't forget to activate it in the plugins section)
+Requirements:
+
+- Unreal Engine 5.3
+- [Download](https://github.com/CREW-Brussels/CHORUS.git) the plugin's folder in the Plugins folder of your project here or if your project is on git, add this command in the Plugins folder of your project:
+```
+git add submodule https://github.com/CREW-Brussels/CHORUS.git
+```
+***
 
 
 ***
