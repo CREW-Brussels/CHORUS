@@ -15,7 +15,7 @@ Requirements:
 - Unreal Engine 5.3
 - [Download](https://github.com/CREW-Brussels/CHORUS.git) the plugin's folder in the Plugins folder of your project here or if your project is on git, add this command in the Plugins folder of your project:
 ```
-git add submodule https://github.com/CREW-Brussels/CHORUS.git
+git submodule add https://github.com/CREW-Brussels/CHORUS.git
 ```
 ***
 
